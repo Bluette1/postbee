@@ -1,0 +1,12 @@
+<div class="container">
+    <h1>PostBee - Job Posts</h1>
+    <div *ngIf="error">{{ error }}</div>
+    <div *ngIf="!jobs.length && !error">Loading jobs...</div>
+    <div *ngFor="let job of jobs" class="job">
+      <h3>{{ job.title }}</h3>
+      <p>{{ job.company }}</p>
+      <p>{{ job.logo }}</p>
+      <a [href]="job.link" target="_blank">View Job</a>
+    </div>
+  </div>
+  
