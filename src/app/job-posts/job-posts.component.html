@@ -1,30 +1,31 @@
-<!-- <div class="container">
-  <h1>PostBee - Job Posts</h1>
-  <div *ngIf="error" class="error">{{ error }}</div>
-  <div *ngIf="!jobs.length && !error" class="loading">Loading jobs...</div>
-  
-  <div class="job-list">
-    <div *ngFor="let job of jobs" class="job-card">
-      <h3 class="job-title">{{ job.title }}</h3>
-      <p class="job-company">{{ job.company }}</p>
-      <p class="job-description">{{ job.logo }}</p>
-      <a [href]="job.link" target="_blank" class="apply-button">View Job</a>
-    </div>
-  </div>
-</div> -->
-
 <div class="container">
-  <h1>PostBee - Job Posts</h1>
+  <h1>Remote Programming Jobs</h1>
   <div *ngIf="error" class="error">{{ error }}</div>
   <div *ngIf="!jobs.length && !error" class="loading">Loading jobs...</div>
-  
+
   <div class="job-list">
     <div *ngFor="let job of jobs" class="job-card">
-      <h3 class="job-title">{{ job.title }}</h3>
-      <p class="job-company">{{ job.company }}</p>
-      <img *ngIf="job.logo" [src]="job.logo" alt="{{ job.company }} logo" class="job-logo" />
-      <a [href]="job.link" target="_blank" class="apply-button">View Job</a>
+      <a [href]="job.link" target="_blank" class="job-link">
+        <div class="job-header">
+          <img
+            *ngIf="job.logo"
+            [src]="job.logo"
+            alt="{{ job.company }} logo"
+            class="job-logo"
+          />
+          <section>
+            <p class="job-company">
+              <ng-container *ngIf="job.company_link; else noLink">
+                <a [href]="job.company_link" target="_blank">{{
+                  job.company_title
+                }}</a>
+              </ng-container>
+              <ng-template #noLink>{{ job.company_title }}</ng-template>
+            </p>
+            <h3 class="job-title">{{ job.title }}</h3>
+          </section>
+        </div>
+      </a>
     </div>
   </div>
 </div>
-

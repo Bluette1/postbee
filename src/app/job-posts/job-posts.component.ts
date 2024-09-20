@@ -6,6 +6,8 @@ interface Job {
   company: string;
   logo: string;
   link: string;
+  company_link: string;
+  company_title: string;
 }
 
 @Component({
