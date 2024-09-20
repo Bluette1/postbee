@@ -1,12 +1,30 @@
-<div class="container">
-    <h1>PostBee - Job Posts</h1>
-    <div *ngIf="error">{{ error }}</div>
-    <div *ngIf="!jobs.length && !error">Loading jobs...</div>
-    <div *ngFor="let job of jobs" class="job">
-      <h3>{{ job.title }}</h3>
-      <p>{{ job.company }}</p>
-      <p>{{ job.logo }}</p>
-      <a [href]="job.link" target="_blank">View Job</a>
+<!-- <div class="container">
+  <h1>PostBee - Job Posts</h1>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="!jobs.length && !error" class="loading">Loading jobs...</div>
+  
+  <div class="job-list">
+    <div *ngFor="let job of jobs" class="job-card">
+      <h3 class="job-title">{{ job.title }}</h3>
+      <p class="job-company">{{ job.company }}</p>
+      <p class="job-description">{{ job.logo }}</p>
+      <a [href]="job.link" target="_blank" class="apply-button">View Job</a>
     </div>
   </div>
+</div> -->
+
+<div class="container">
+  <h1>PostBee - Job Posts</h1>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="!jobs.length && !error" class="loading">Loading jobs...</div>
   
+  <div class="job-list">
+    <div *ngFor="let job of jobs" class="job-card">
+      <h3 class="job-title">{{ job.title }}</h3>
+      <p class="job-company">{{ job.company }}</p>
+      <img *ngIf="job.logo" [src]="job.logo" alt="{{ job.company }} logo" class="job-logo" />
+      <a [href]="job.link" target="_blank" class="apply-button">View Job</a>
+    </div>
+  </div>
+</div>
+
