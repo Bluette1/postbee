@@ -8,6 +8,11 @@ interface Job {
   link: string;
   company_link: string;
   company_title: string;
+  time: string;
+  location: string;
+  date: string;
+  badges: string[];
+  tags: string[];
 }
 
 @Component({

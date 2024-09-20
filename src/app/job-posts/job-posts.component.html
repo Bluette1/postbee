@@ -1,4 +1,4 @@
-<!-- <div class="container">
+<div class="container">
   <h1>Remote Programming Jobs</h1>
   <div *ngIf="error" class="error">{{ error }}</div>
   <div *ngIf="!jobs.length && !error" class="loading">Loading jobs...</div>
@@ -6,52 +6,38 @@
   <div class="job-list">
     <div *ngFor="let job of jobs" class="job-card">
       <a [href]="job.link" target="_blank" class="job-link">
-        <div class="job-header">
-          <img
-            *ngIf="job.logo"
-            [src]="job.logo"
-            alt="{{ job.company }} logo"
-            class="job-logo"
-          />
-          <section>
-            <p class="job-company">
-              <ng-container *ngIf="job.company_link; else noLink">
-                <a [href]="job.company_link" target="_blank">{{
-                  job.company_title
-                }}</a>
-              </ng-container>
-              <ng-template #noLink>{{ job.company_title }}</ng-template>
-            </p>
-            <h3 class="job-title">{{ job.title }}</h3>
-          </section>
-        </div>
-      </a>
-    </div>
-  </div>
-</div> -->
-
-<div class="container mx-auto p-4">
-  <h1 class="text-2xl font-bold">Remote Programming Jobs</h1>
-  <div *ngIf="error" class="text-red-500">{{ error }}</div>
-  <div *ngIf="!jobs.length && !error" class="italic">Loading jobs...</div>
-
-  <div class="grid grid-cols-1 gap-4">
-    <div *ngFor="let job of jobs" class="bg-white border rounded-lg p-4 shadow hover:shadow-lg transition-shadow">
-      <a [href]="job.link" target="_blank" class="block">
-        <div class="flex items-center">
-          <img *ngIf="job.logo" [src]="job.logo" alt="{{ job.company }} logo" class="w-12 h-12 rounded-full mr-4" />
-          <div>
-            <p class="font-semibold">
-              <ng-container *ngIf="job.company_link; else noLink">
-                <a [href]="job.company_link" target="_blank">{{ job.company_title }}</a>
-              </ng-container>
-              <ng-template #noLink>{{ job.company_title }}</ng-template>
-            </p>
-            <h3 class="text-lg">{{ job.title }}</h3>
+        <article class="job-content">
+          <div class="job-header">
+            <img
+              *ngIf="job.logo"
+              [src]="job.logo"
+              alt="{{ job.company_title }} logo"
+              class="job-logo"
+            />
+            <section>
+              <p class="job-company">
+                <ng-container *ngIf="job.company_link; else noLink">
+                  <a [href]="job.company_link" target="_blank">{{
+                    job.company_title
+                  }}</a>
+                </ng-container>
+                <ng-template #noLink>{{ job.company_title }}</ng-template>
+              </p>
+              <h3 class="job-title">{{ job.title }}</h3>
+              <p class="job-location">{{ job.location }}</p>
+            </section>
           </div>
-        </div>
+          <div class="job-details">
+            <p class="job-time">{{ job.time }}</p>
+            <p class="job-date">{{ job.date }}</p>
+            <div class="tags">
+              <span *ngFor="let tag of job.tags | slice : 0 : 4" class="tag">{{
+                tag
+              }}</span>
+            </div>
+          </div>
+        </article>
       </a>
     </div>
   </div>
 </div>
-
