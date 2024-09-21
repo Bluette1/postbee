@@ -1,14 +1,20 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
-import { JobPostsComponent } from './job-posts/job-posts.component';
+import { JwtInterceptor } from './jwt.interceptor';
 
 @NgModule({
-  declarations: [AppComponent, JobPostsComponent],
-  imports: [BrowserModule, HttpClientModule],
-  providers: [],
-  bootstrap: [AppComponent],
+  declarations: [
+    /* your components */
+  ],
+  imports: [
+    HttpClientModule,
+    // other imports
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
+  bootstrap: [
+    /* your main component */
+  ],
 })
 export class AppModule {}

@@ -1,0 +1,10 @@
+<form (submit)="login()">
+  <input type="email" [(ngModel)]="credentials.email" name="email" required />
+  <input
+    type="password"
+    [(ngModel)]="credentials.password"
+    name="password"
+    required
+  />
+  <button type="submit">Login</button>
+</form>
