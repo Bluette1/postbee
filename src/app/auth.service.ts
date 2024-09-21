@@ -3,21 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { AuthResponse } from './auth-response.interface'; 
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://your-api-url.com'; // Replace with your API URL
+  private apiUrl = 'https://your-api-url.com'; // Replace with actual API URL
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
-      tap((response) => {
-        localStorage.setItem('access_token', response.token);
-      })
-    );
+  login(credentials: any): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/login`, credentials)
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('access_token', response.token);
+        })
+      );
   }
 
   logout(): void {
