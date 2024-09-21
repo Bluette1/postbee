@@ -1,0 +1,31 @@
+<div class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="bg-white p-6 rounded-lg shadow-md w-80">
+      <h2 class="text-xl font-bold mb-4">Sign Up</h2>
+      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <label class="block text-gray-700" for="username">Username</label>
+          <input type="text" id="username" formControlName="username" class="border rounded-md px-3 py-2 w-full" />
+          <div *ngIf="signUpForm.get('username')?.invalid && signUpForm.get('username')?.touched" class="text-red-500">
+            Username is required.
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700" for="email">Email</label>
+          <input type="email" id="email" formControlName="email" class="border rounded-md px-3 py-2 w-full" />
+          <div *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" class="text-red-500">
+            A valid email is required.
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700" for="password">Password</label>
+          <input type="password" id="password" formControlName="password" class="border rounded-md px-3 py-2 w-full" />
+          <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="text-red-500">
+            Password is required.
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white rounded-md py-2 hover:bg-blue-700 transition duration-200">
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </div>

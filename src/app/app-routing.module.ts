@@ -4,9 +4,11 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { JobPostsComponent } from './job-posts/job-posts.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'sign-up', component: SignUpComponent },
   { path: 'job-posts', component: JobPostsComponent },
   { path: '', redirectTo: '/job-posts', pathMatch: 'full' },
   {

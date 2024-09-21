@@ -11,6 +11,7 @@ import { LoginButtonComponent } from './login-button/login-button.component';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HeaderComponent,
     LoginButtonComponent,
     DashboardComponent,
+    SignUpComponent,
   ],
   imports: [
     HttpClientModule,
