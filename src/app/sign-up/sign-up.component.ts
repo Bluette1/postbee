@@ -1,27 +1,28 @@
-// sign-up.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent {
-  signUpForm: FormGroup;
+export class SignUpComponent implements OnInit {
+  constructor(private fb: FormBuilder) {}
 
-  constructor(private fb: FormBuilder) {
-    this.signUpForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-    });
+  signUpForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    passwordConfirmation: ['', [Validators.required]],
+  });
+
+  ngOnInit(): void {
+    // You can still add logic here if needed
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.signUpForm.valid) {
-      console.log('Form Submitted!', this.signUpForm.value);
-      // Here you would typically send the data to your backend
+      // Handle the form submission
+      console.log(this.signUpForm.value);
     }
   }
 }
