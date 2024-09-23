@@ -18,8 +18,13 @@ export class AuthService {
       .post<AuthResponse>(`${this.apiUrl}/users/sign_in`, { user: credentials })
       .pipe(
         tap((response) => {
-          localStorage.setItem('access_token', response.access_token);
-          localStorage.setItem('email', response.user.email);
+          const userData = {
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token,
+            user: response.user,
+          };
+
+          localStorage.setItem('user', JSON.stringify(userData));
         })
       );
   }
@@ -35,28 +40,25 @@ export class AuthService {
       .post<AuthResponse>(`${this.apiUrl}/users`, userDetails) // Adjust the endpoint as needed
       .pipe(
         tap((response) => {
-          // Optionally store the token or perform additional logic
-          // localStorage.setItem('access_token', response.access_token);
+          // Optionally perform additional logic
         })
       );
   }
 
   logout(): void {
-    const email = localStorage.getItem('email');
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = userData?.user?._id;
+    const accessToken = userData?.access_token;
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     });
 
     this.http
-      .delete(`${this.apiUrl}/users/sign_out`, {
-        headers,
-        body: { user: { email } },
-      })
+      .delete(`${this.apiUrl}/users/${userId}/sign_out`, { headers })
       .subscribe(
         (response) => {
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('email');
+          localStorage.removeItem('user');
           this.router.navigate(['/']);
         },
         (error) => {
@@ -66,9 +68,7 @@ export class AuthService {
   }
 
   public get isLoggedIn(): boolean {
-    return (
-      localStorage.getItem('access_token') !== null &&
-      localStorage.getItem('email') !== null
-    );
+    const user = localStorage.getItem('user');
+    return user !== null;
   }
 }
