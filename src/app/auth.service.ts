@@ -47,15 +47,14 @@ export class AuthService {
 
   logout(): void {
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    const userId = userData?.user?._id;
-    const accessToken = userData?.access_token;
+    const accessToken = userData?.accessToken;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     });
 
     this.http
-      .delete(`${this.apiUrl}/users/${userId}/sign_out`, { headers })
+      .delete(`${this.apiUrl}/users/sign_out`, { headers })
       .subscribe(
         (response) => {
           localStorage.removeItem('user');
