@@ -1,10 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
+import { JobPostsComponent } from './job-posts/job-posts.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'sign-up', component: SignUpComponent },
+  { path: 'job-posts', component: JobPostsComponent },
+  { path: '', redirectTo: '/job-posts', pathMatch: 'full' },
+  {
+    path: 'protected',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: '**', redirectTo: '/job-posts' } 
+];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
