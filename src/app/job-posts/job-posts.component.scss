@@ -1,0 +1,144 @@
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #343a40;
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.loading {
+  text-align: center;
+  font-style: italic;
+}
+
+.job-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.job-card {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .job-link {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: #007bff;
+    }
+  }
+
+  .job-content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .job-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+
+    .job-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
+      margin-top: -5px;
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+    }
+
+    .job-company {
+      margin: 0;
+      font-weight: bold;
+      line-height: 1.2;
+      color: rgb(26, 26, 66);
+      &:hover {
+        color: rgb(5, 53, 54);
+      }
+    }
+
+    .job-title {
+      font-size: 1.2em;
+      margin: 5px 0;
+    }
+  }
+
+  .job-location,
+  .job-time,
+  .job-date {
+    color: #666;
+    font-size: 0.9em;
+    margin: 2px 0;
+  }
+
+  .job-badges,
+  .tags {
+    margin-top: 10px;
+  }
+
+  .badge,
+  .tag {
+    background-color: white;
+    border: 1px solid rgb(26, 26, 66);
+    color: rgb(26, 26, 66);
+    border-radius: 12px;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    margin-right: 5px;
+    display: inline-block;
+  }
+
+  .badge:last-child {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .job-content {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .job-card {
+    padding: 10px;
+  }
+
+  .apply-button {
+    padding: 8px 10px;
+  }
+}
