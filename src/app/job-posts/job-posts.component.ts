@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
 
 interface Job {
   title: string;
@@ -24,6 +26,8 @@ export class JobPostsComponent implements OnInit {
   jobs: Job[] = [];
   error: string | null = null;
 
+  private apiUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -31,7 +35,7 @@ export class JobPostsComponent implements OnInit {
   }
 
   fetchJobs(): void {
-    const apiUrl = 'http://127.0.0.1:3000/job_posts'; // Replace with actual API URL
+    const apiUrl = `${this.apiUrl}/job_posts`; 
     this.http.get<Job[]>(apiUrl).subscribe(
       (data) => {
         this.jobs = data;
