@@ -85,8 +85,8 @@ export class FollowUpFormComponent implements OnInit {
         followUp => {
           if (followUp) {
             this.editMode = true;
-            this.existingFollowUp = followUp; // Assign the fetched follow-up data
-            this.followUpForm.patchValue(followUp); // Populate the form with existing data
+            this.existingFollowUp = followUp; 
+            this.followUpForm.patchValue(followUp);
           }
         }
       );

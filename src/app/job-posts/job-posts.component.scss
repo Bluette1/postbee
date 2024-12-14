@@ -121,6 +121,7 @@ h1 {
   .badge:last-child {
     margin-right: 0;
   }
+  overflow: hidden; 
 }
 
 @media (max-width: 800px) {
