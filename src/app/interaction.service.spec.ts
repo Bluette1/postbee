@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { InteractionService } from './interaction.service';
+import { InteractionService } from './job-posts/job-post-interaction/interaction.service';
 
 describe('InteractionService', () => {
   let service: InteractionService;

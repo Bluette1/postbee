@@ -12,7 +12,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-
+import { InteractionPanelComponent } from './job-posts/job-post-interaction/interaction-panel.component';
+import { FollowUpFormComponent } from './job-posts/job-post-interaction/follow-up-component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatOptionModule } from '@angular/material/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,6 +31,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     LoginButtonComponent,
     DashboardComponent,
     SignUpComponent,
+    InteractionPanelComponent,
+    FollowUpFormComponent
   ],
   imports: [
     HttpClientModule,
@@ -30,7 +40,14 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     RouterModule,
     FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatOptionModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

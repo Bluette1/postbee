@@ -1,0 +1,27 @@
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+.interaction-panel {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .view-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .last-viewed {
+    color: #999;
+    font-size: 0.8rem;
+  }

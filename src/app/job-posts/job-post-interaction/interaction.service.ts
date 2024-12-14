@@ -10,16 +10,17 @@ interface JobInteraction {
   lastViewed: Date;
 }
 
-interface FollowUp {
+export interface FollowUp {
   id: string;
   jobId: string;
-  status: 'applied' | 'interviewing' | 'offered' | 'rejected';
-  notes: string;
+  status: 'applied' | 'interviewing' | 'offered' | 'rejected'| null | undefined;
+  notes?: string;
   nextStep?: string;
-  followUpDate?: Date;
+  followUpDate?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +64,16 @@ export class JobInteractionService {
 
   getSavedJobs(): Observable<JobInteraction[]> {
     return this.http.get<JobInteraction[]>(`${this.apiUrl}/saved`);
+  }
+
+  getInteractionStatus(jobId: string): Observable<{
+    isPinned: boolean;
+    isSaved: boolean;
+    hasFollowUp: boolean;
+    viewCount: number;
+    lastViewed?: Date;
+  }> {
+    return this.http.get<any>(`${this.apiUrl}/status/${jobId}`);
   }
 }
 
