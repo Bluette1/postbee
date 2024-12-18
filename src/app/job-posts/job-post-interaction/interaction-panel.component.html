@@ -1,4 +1,9 @@
 <div class="interaction-panel">
+    <div class="view-info" *ngIf="viewCount">
+      <mat-icon>visibility</mat-icon>
+      <span>Viewed {{ viewCount }} times</span>
+      <span class="last-viewed">Last: {{ lastViewed | date:'short' }}</span>
+    </div>
     <div class="action-buttons">
       <button mat-icon-button
         [color]="isPinned ? 'accent' : ''"
@@ -20,11 +25,5 @@
         matTooltip="Add follow-up">
         <mat-icon>event_note</mat-icon>
       </button>
-    </div>
-
-    <div class="view-info" *ngIf="viewCount">
-      <mat-icon>visibility</mat-icon>
-      <span>Viewed {{ viewCount }} times</span>
-      <span class="last-viewed">Last: {{ lastViewed | date:'short' }}</span>
     </div>
   </div>

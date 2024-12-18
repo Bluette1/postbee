@@ -5,7 +5,7 @@
 
   <div class="job-list">
     <div *ngFor="let job of jobs" class="job-card">
-      <app-interaction-panel [jobId]="job._id"></app-interaction-panel>
+      <!-- <app-interaction-panel [jobId]="job._id"></app-interaction-panel> -->
       <a [href]="job.link" target="_blank" class="job-link">
         <article class="job-content">
           <div class="job-header">
@@ -39,6 +39,7 @@
           </div>
         </article>
       </a>
+      <app-interaction-panel [jobId]="job._id"></app-interaction-panel>
     </div>
   </div>
 </div>
