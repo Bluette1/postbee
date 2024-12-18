@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { FollowUp } from '../../models/follow-up.model';
 
 interface JobInteraction {
   jobId: string;
@@ -8,17 +9,6 @@ interface JobInteraction {
   isSaved: boolean;
   viewCount: number;
   lastViewed: Date;
-}
-
-export interface FollowUp {
-  id: string;
-  jobId: string;
-  status: 'applied' | 'interviewing' | 'offered' | 'rejected'| null | undefined;
-  notes?: string;
-  nextStep?: string;
-  followUpDate?: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 
