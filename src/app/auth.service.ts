@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl; // Use environment variable
+  private apiUrl = environment.apiUrl; 
 
   constructor(private http: HttpClient, private router: Router) {}
 
