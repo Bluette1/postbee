@@ -11,7 +11,6 @@ import { MatDialog } from "@angular/material/dialog";
 })
 export class InteractionPanelComponent implements OnInit {
   @Input() jobId!: string;
-  isPinned = false;
   isSaved = false;
   hasFollowUp = false;
   viewCount = 0;
@@ -30,7 +29,6 @@ export class InteractionPanelComponent implements OnInit {
     // Get initial interaction status
     this.jobInteractionService.getInteractionStatus(this.jobId).subscribe(
       status => {
-        this.isPinned = status.isPinned;
         this.isSaved = status.isSaved;
         this.hasFollowUp = status.hasFollowUp;
         this.viewCount = status.viewCount;
@@ -39,11 +37,6 @@ export class InteractionPanelComponent implements OnInit {
     );
   }
 
-      togglePin() {
-      this.jobInteractionService.togglePin(this.jobId).subscribe(
-        isPinned => this.isPinned = isPinned
-      );
-    }
   
     toggleSave() {
       this.jobInteractionService.toggleSave(this.jobId).subscribe(

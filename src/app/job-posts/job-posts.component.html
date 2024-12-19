@@ -1,45 +1,75 @@
 <div class="container">
   <h1>Remote Programming Jobs</h1>
-  <div *ngIf="error" class="error">{{ error }}</div>
-  <div *ngIf="!jobs.length && !error" class="loading">Loading jobs...</div>
 
-  <div class="job-list">
-    <div *ngFor="let job of jobs" class="job-card">
-      <!-- <app-interaction-panel [jobId]="job._id"></app-interaction-panel> -->
-      <a [href]="job.link" target="_blank" class="job-link">
-        <article class="job-content">
-          <div class="job-header">
-            <img
-              *ngIf="job.logo"
-              [src]="job.logo"
-              alt="{{ job.company_title }} logo"
-              class="job-logo"
-            />
-            <section>
-              <p class="job-company">
-                <ng-container *ngIf="job.company_link; else noLink">
-                  <a [href]="job.company_link" target="_blank">{{
-                    job.company_title
-                  }}</a>
-                </ng-container>
-                <ng-template #noLink>{{ job.company_title }}</ng-template>
-              </p>
-              <h3 class="job-title">{{ job.title }}</h3>
-              <p class="job-location">{{ job.location }}</p>
-            </section>
-          </div>
-          <div class="job-details">
-            <p class="job-time">{{ job.time }}</p>
-            <p class="job-date">{{ job.date }}</p>
-            <div class="tags">
-              <span *ngFor="let tag of job.tags | slice : 0 : 4" class="tag">{{
-                tag
-              }}</span>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <div *ngIf="!(sortedJobs$ | async)?.length && !error" class="loading">
+    Loading jobs...
+  </div>
+
+  <div class="jobs-container">
+    <ng-container *ngIf="sortedJobs$ | async as jobs">
+      <div
+        *ngFor="let job of jobs"
+        class="job-card"
+        [class.pinned]="job.isPinned"
+      >
+        <div class="job-header">
+          <a [href]="job.link" target="_blank" class="job-link-title">
+            <div class="company-logo" *ngIf="job.logo">
+              <img [src]="job.logo" [alt]="job.company" />
             </div>
+            <div class="job-title-section">
+              <h2>{{ job.title }}</h2>
+              <h3>{{ job.company }}</h3>
+            </div>
+          </a>
+          <button
+            class="pin-button"
+            (click)="togglePin(job._id); $event.stopPropagation()"
+            [class.pinned]="job.isPinned"
+            aria-label="Pin this job"
+          >
+            <i class="material-icons">push_pin</i>
+          </button>
+        </div>
+
+        <a [href]="job.link" target="_blank" class="job-link-content">
+          <div class="job-details">
+            <span class="location">{{ job.location }}</span>
+            <span class="time">{{ job.time }}</span>
+            <span class="date">{{ job.date }}</span>
           </div>
-        </article>
-      </a>
-      <app-interaction-panel [jobId]="job._id"></app-interaction-panel>
-    </div>
+
+          <div class="badges" *ngIf="job.badges?.length">
+            <span class="badge" *ngFor="let badge of job.badges">{{
+              badge
+            }}</span>
+          </div>
+
+          <div class="tags" *ngIf="job.tags?.length">
+            <span class="tag" *ngFor="let tag of job.tags">{{ tag }}</span>
+          </div>
+
+          <div class="job-links">
+            <ng-container *ngIf="job.company_link; else noLink">
+              <a
+                [href]="job.company_link"
+                target="_blank"
+                class="company-link"
+                (click)="$event.stopPropagation()"
+              >
+                {{ job.company_title }}
+              </a>
+            </ng-container>
+            <ng-template #noLink>{{ job.company_title }}</ng-template>
+          </div>
+        </a>
+
+        <app-interaction-panel
+          [jobId]="job._id"
+          (click)="$event.stopPropagation()"
+        ></app-interaction-panel>
+      </div>
+    </ng-container>
   </div>
 </div>
