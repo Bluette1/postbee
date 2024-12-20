@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Remote Programming Jobs</h1>
+  <h1 class="title-header">Remote Programming Jobs</h1>
 
   <div *ngIf="error" class="error-message">{{ error }}</div>
   <div *ngIf="!(sortedJobs$ | async)?.length && !error" class="loading">

@@ -1,37 +1,5 @@
-<!-- <div class="interaction-panel">
-    <div class="view-info" *ngIf="viewCount">
-      <mat-icon>visibility</mat-icon>
-      <span>Viewed {{ viewCount }} times</span>
-      <span class="last-viewed">Last: {{ lastViewed | date:'short' }}</span>
-    </div>
-    <div class="action-buttons">
-
-
-      <button mat-icon-button
-        [color]="isSaved ? 'accent' : ''"
-        (click)="toggleSave()"
-        matTooltip="Save to my list">
-        <mat-icon>bookmark</mat-icon>
-      </button>
-
-      <button mat-icon-button
-        [color]="hasFollowUp ? 'accent' : ''"
-        (click)="openFollowUpForm()"
-        matTooltip="Add follow-up">
-        <mat-icon>event_note</mat-icon>
-      </button>
-    </div>
-  </div> -->
-
-  <!-- interaction-panel.component.html -->
 <div class="interaction-panel" (click)="$event.stopPropagation()">
   <div class="action-buttons">
-    <!-- <button mat-icon-button
-      [color]="isPinned ? 'accent' : ''"
-      (click)="togglePin(); $event.stopPropagation()"
-      matTooltip="Pin this job">
-      <mat-icon>push_pin</mat-icon>
-    </button> -->
 
     <button mat-icon-button
       [color]="isSaved ? 'accent' : ''"

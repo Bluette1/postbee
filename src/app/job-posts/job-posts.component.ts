@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { JobInteractionService } from './job-post-interaction/interaction.service';
+import { AuthService } from '../auth.service';
+
 
 interface Job {
   _id: string;
@@ -48,7 +51,11 @@ export class JobPostsComponent implements OnInit {
   error: string | null = null;
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private jobInteractionService: JobInteractionService,
+    private authService: AuthService 
+  ) {}
 
   ngOnInit(): void {
     this.fetchJobs();
@@ -74,15 +81,23 @@ export class JobPostsComponent implements OnInit {
   togglePin(jobId: string): void {
     const currentPinnedIds = this.pinnedJobIds.value;
     const isPinned = currentPinnedIds.includes(jobId);
-
-    let newPinnedIds: string[];
-    if (isPinned) {
-      newPinnedIds = currentPinnedIds.filter((id) => id !== jobId);
-    } else {
-      newPinnedIds = [jobId, ...currentPinnedIds];
-    }
-
+  
+    const newPinnedIds = isPinned
+      ? currentPinnedIds.filter((id) => id !== jobId) 
+      : [jobId, ...currentPinnedIds];
+  
     this.pinnedJobIds.next(newPinnedIds);
     localStorage.setItem('pinnedJobs', JSON.stringify(newPinnedIds));
+  
+    if (this.authService.isLoggedIn) {
+      this.jobInteractionService.togglePin(jobId).subscribe(
+        () => {
+          // Optionally handle success here, if needed
+        },
+        (err) => {
+          console.error(`Error ${isPinned ? 'unpinning' : 'pinning'} job:`, err);
+        }
+      );
+    }
   }
 }
