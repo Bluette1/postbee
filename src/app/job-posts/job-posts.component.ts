@@ -64,9 +64,31 @@ export class JobPostsComponent implements OnInit {
     const savedSavedJobs = localStorage.getItem('savedJobs');
     if (savedPinnedJobs) {
       this.pinnedJobIds.next(JSON.parse(savedPinnedJobs));
+    } else {
+      this.jobInteractionService.getPinnedJobs().subscribe(
+        (pinnedJobs) => {
+          const pinnedIds = pinnedJobs.map(job => job.jobId); 
+          this.pinnedJobIds.next(pinnedIds);
+          localStorage.setItem('pinnedJobs', JSON.stringify(pinnedIds));
+        },
+        (err) => {
+          console.error('Error fetching pinned jobs:', err);
+        }
+      );
     }
     if (savedSavedJobs) {
       this.savedJobIds.next(JSON.parse(savedSavedJobs));
+    } else {
+      this.jobInteractionService.getSavedJobs().subscribe(
+        (savedJobs) => {
+          const savedIds = savedJobs.map(job => job.jobId); 
+          this.savedJobIds.next(savedIds);
+          localStorage.setItem('savedJobs', JSON.stringify(savedIds)); 
+        },
+        (err) => {
+          console.error('Error fetching saved jobs:', err);
+        }
+      );
     }
   }
 
