@@ -1,17 +1,21 @@
 <div class="interaction-panel" (click)="$event.stopPropagation()">
   <div class="action-buttons">
-
-    <button mat-icon-button
+    <button
+      mat-icon-button
       [color]="isSaved ? 'accent' : ''"
-      (click)="toggleSave(); $event.stopPropagation()"
-      matTooltip="Save to my list">
-      <mat-icon>bookmark</mat-icon>
+      (click)="toggleSave()"
+      matTooltip="Save to my list"
+      [@saveState]="isSaved ? 'saved' : 'unsaved'"
+    >
+      <mat-icon>{{ isSaved ? "bookmark" : "bookmark_border" }}</mat-icon>
     </button>
 
-    <button mat-icon-button
+    <button
+      mat-icon-button
       [color]="hasFollowUp ? 'accent' : ''"
       (click)="openFollowUpForm(); $event.stopPropagation()"
-      matTooltip="Add follow-up">
+      matTooltip="Add follow-up"
+    >
       <mat-icon>event_note</mat-icon>
     </button>
   </div>

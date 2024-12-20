@@ -31,13 +31,14 @@ interface Job {
 export class JobPostsComponent implements OnInit {
   private jobsSubject = new BehaviorSubject<Job[]>([]);
   private pinnedJobIds = new BehaviorSubject<string[]>([]);
+  private savedJobIds = new BehaviorSubject<string[]>([]);
 
-  // Combine jobs and pinned IDs to create sorted jobs observable
-  sortedJobs$ = combineLatest([this.jobsSubject, this.pinnedJobIds]).pipe(
-    map(([jobs, pinnedIds]) => {
+  sortedJobs$ = combineLatest([this.jobsSubject, this.pinnedJobIds, this.savedJobIds]).pipe(
+    map(([jobs, pinnedIds, savedIds]) => {
       const enhancedJobs = jobs.map((job) => ({
         ...job,
         isPinned: pinnedIds.includes(job._id),
+        isSaved: savedIds.includes(job._id)
       }));
 
       return enhancedJobs.sort((a, b) => {
@@ -60,8 +61,12 @@ export class JobPostsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchJobs();
     const savedPinnedJobs = localStorage.getItem('pinnedJobs');
+    const savedSavedJobs = localStorage.getItem('savedJobs');
     if (savedPinnedJobs) {
       this.pinnedJobIds.next(JSON.parse(savedPinnedJobs));
+    }
+    if (savedSavedJobs) {
+      this.savedJobIds.next(JSON.parse(savedSavedJobs));
     }
   }
 
@@ -76,6 +81,25 @@ export class JobPostsComponent implements OnInit {
         this.error = 'Failed to load jobs. Please try again later.';
       }
     );
+  }
+
+   toggleSave(jobId: string): void {
+    const currentSavedIds = this.savedJobIds.value;
+    const isSaved = currentSavedIds.includes(jobId);
+    
+    let newSavedIds: string[];
+    if (isSaved) {
+      newSavedIds = currentSavedIds.filter(id => id !== jobId);
+    } else {
+      newSavedIds = [jobId, ...currentSavedIds];
+    }
+    
+    this.savedJobIds.next(newSavedIds);
+    localStorage.setItem('savedJobs', JSON.stringify(newSavedIds));
+  }
+
+  isSaved(jobId: string): boolean {
+    return this.savedJobIds.value.includes(jobId);
   }
 
   togglePin(jobId: string): void {

@@ -26,3 +26,22 @@
     color: #999;
     font-size: 0.8rem;
   }
+
+  :host ::ng-deep .mat-icon-button {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+  }
+
+  :host ::ng-deep .mat-icon {
+    font-size: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .mat-icon-button:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .mat-icon-button[color="accent"] {
+    color: #1976d2;
+  }
