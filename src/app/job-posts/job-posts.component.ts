@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { JobInteractionService } from './job-post-interaction/interaction.service';
 import { AuthService } from '../auth.service';
 
@@ -33,20 +33,29 @@ export class JobPostsComponent implements OnInit {
   private pinnedJobIds = new BehaviorSubject<string[]>([]);
   private savedJobIds = new BehaviorSubject<string[]>([]);
 
-  sortedJobs$ = combineLatest([this.jobsSubject, this.pinnedJobIds, this.savedJobIds]).pipe(
+  sortedJobs$ = combineLatest([
+    this.jobsSubject,
+    this.pinnedJobIds,
+    this.savedJobIds,
+  ]).pipe(
     map(([jobs, pinnedIds, savedIds]) => {
       const enhancedJobs = jobs.map((job) => ({
         ...job,
         isPinned: pinnedIds.includes(job._id),
         isSaved: savedIds.includes(job._id),
         date: this.calculateTimePosted(new Date(job.created_at), job.date),
-        originalPostingDate: this.calculateOriginalPostingDate(new Date(job.created_at), job.date)
+        originalPostingDate: this.calculateOriginalPostingDate(
+          new Date(job.created_at),
+          job.date
+        ),
       }));
 
       return enhancedJobs.sort((a, b) => {
         if (a.isPinned && !b.isPinned) return -1;
         if (!a.isPinned && b.isPinned) return 1;
-        return b.originalPostingDate.getTime() - a.originalPostingDate.getTime(); // Descending order
+        return (
+          b.originalPostingDate.getTime() - a.originalPostingDate.getTime()
+        ); // Descending order
       });
     })
   );
@@ -57,7 +66,7 @@ export class JobPostsComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private jobInteractionService: JobInteractionService,
-    private authService: AuthService 
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -66,10 +75,28 @@ export class JobPostsComponent implements OnInit {
     this.loadSavedJobs();
   }
 
+  private checkJobLinkExists(link: string): Observable<boolean> {
+    return this.http.head(link).pipe(
+      map(() => true),
+      catchError(() => of(false)) // Return false if the link does not exist
+    );
+  }
+
   fetchJobs(): void {
     const apiUrl = `${this.apiUrl}/job_posts`;
     this.http.get<Job[]>(apiUrl).subscribe(
-      (data) => this.jobsSubject.next(data),
+      (data) => {
+        // Check link existence for each job
+        combineLatest(
+          data.map((job) =>
+            this.checkJobLinkExists(job.link).pipe(
+              map((exists) => ({ ...job, linkExists: exists }))
+            )
+          )
+        ).subscribe((jobsWithLinks) => {
+          this.jobsSubject.next(jobsWithLinks);
+        });
+      },
       (err) => {
         console.error('Error fetching jobs:', err);
         this.error = 'Failed to load jobs. Please try again later.';
@@ -84,7 +111,7 @@ export class JobPostsComponent implements OnInit {
     } else {
       this.jobInteractionService.getPinnedJobs().subscribe(
         (pinnedJobs) => {
-          const pinnedIds = pinnedJobs.map(job => job.jobId);
+          const pinnedIds = pinnedJobs.map((job) => job.jobId);
           this.pinnedJobIds.next(pinnedIds);
           localStorage.setItem('pinnedJobs', JSON.stringify(pinnedIds));
         },
@@ -102,7 +129,7 @@ export class JobPostsComponent implements OnInit {
     } else {
       this.jobInteractionService.getSavedJobs().subscribe(
         (savedJobs) => {
-          const savedIds = savedJobs.map(job => job.jobId);
+          const savedIds = savedJobs.map((job) => job.jobId);
           this.savedJobIds.next(savedIds);
           localStorage.setItem('savedJobs', JSON.stringify(savedIds));
         },
@@ -116,7 +143,7 @@ export class JobPostsComponent implements OnInit {
   toggleSave(jobId: string): void {
     const currentSavedIds = this.savedJobIds.value;
     const newSavedIds = currentSavedIds.includes(jobId)
-      ? currentSavedIds.filter(id => id !== jobId)
+      ? currentSavedIds.filter((id) => id !== jobId)
       : [jobId, ...currentSavedIds];
 
     this.savedJobIds.next(newSavedIds);
@@ -130,7 +157,7 @@ export class JobPostsComponent implements OnInit {
   togglePin(jobId: string): void {
     const currentPinnedIds = this.pinnedJobIds.value;
     const newPinnedIds = currentPinnedIds.includes(jobId)
-      ? currentPinnedIds.filter(id => id !== jobId)
+      ? currentPinnedIds.filter((id) => id !== jobId)
       : [jobId, ...currentPinnedIds];
 
     this.pinnedJobIds.next(newPinnedIds);
@@ -140,15 +167,20 @@ export class JobPostsComponent implements OnInit {
       this.jobInteractionService.togglePin(jobId).subscribe(
         () => {},
         (err) => {
-          console.error(`Error ${currentPinnedIds.includes(jobId) ? 'unpinning' : 'pinning'} job:`, err);
+          console.error(
+            `Error ${
+              currentPinnedIds.includes(jobId) ? 'unpinning' : 'pinning'
+            } job:`,
+            err
+          );
         }
       );
     }
   }
 
   private calculateTimePosted(createdAt: Date, age: string): string {
-    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?)?/);
-    if (!ageMatch) return 'Unknown time ago';
+    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?|mo|months?|m)?/);
+    if (!ageMatch) return 'Unknown time ago'; // Handle unexpected format
 
     const value = parseInt(ageMatch[1], 10);
     const unit = ageMatch[2];
@@ -156,24 +188,34 @@ export class JobPostsComponent implements OnInit {
     const now = new Date();
     const originalPostingDate = new Date(createdAt);
 
+    // Adjust the original posting date based on the parsed age
     if (unit === 'd' || unit === 'days') {
       originalPostingDate.setDate(originalPostingDate.getDate() - value);
     } else if (unit === 'h' || unit === 'hours') {
       originalPostingDate.setHours(originalPostingDate.getHours() - value);
     } else if (unit === 'weeks' || unit === 'week') {
       originalPostingDate.setDate(originalPostingDate.getDate() - value * 7);
+    } else if (unit === 'mo' || unit === 'months' || unit === 'm') {
+      originalPostingDate.setMonth(originalPostingDate.getMonth() - value);
     }
 
     const diffInMs = now.getTime() - originalPostingDate.getTime();
-    const diffInHours = Math.floor(diffInMs / (1000 * 3600));
+    const diffInDays = Math.floor(diffInMs / (1000 * 3600 * 24));
 
-    return diffInHours < 24
-      ? `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`
-      : `${Math.floor(diffInHours / 24)} day${diffInHours / 24 !== 1 ? 's' : ''} ago`;
+    // Format the output based on the time difference
+    if (diffInDays >= 100) {
+      const weeks = Math.floor(diffInDays / 7);
+      return `${weeks} week${weeks !== 1 ? 's' : ''} ago`;
+    } else if (diffInDays < 1) {
+      const diffInHours = Math.floor(diffInMs / (1000 * 3600));
+      return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`;
+    } else {
+      return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
+    }
   }
 
   private calculateOriginalPostingDate(createdAt: Date, age: string): Date {
-    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?)?/);
+    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?|mo|months?|m)?/);
     if (!ageMatch) return new Date(); // Handle unexpected format
 
     const value = parseInt(ageMatch[1], 10);
@@ -181,12 +223,15 @@ export class JobPostsComponent implements OnInit {
 
     const originalPostingDate = new Date(createdAt);
 
+    // Adjust the original posting date based on the parsed age
     if (unit === 'd' || unit === 'days') {
       originalPostingDate.setDate(originalPostingDate.getDate() - value);
     } else if (unit === 'h' || unit === 'hours') {
       originalPostingDate.setHours(originalPostingDate.getHours() - value);
     } else if (unit === 'weeks' || unit === 'week') {
       originalPostingDate.setDate(originalPostingDate.getDate() - value * 7);
+    } else if (unit === 'mo' || unit === 'months' || unit === 'm') {
+      originalPostingDate.setMonth(originalPostingDate.getMonth() - value);
     }
 
     return originalPostingDate;
