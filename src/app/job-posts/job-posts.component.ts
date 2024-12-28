@@ -17,7 +17,8 @@ interface Job {
   company_title: string;
   time: string;
   location: string;
-  date: string;
+  date: string; // Assume date is in a format like '9d', '2 weeks ago', etc.
+  created_at: string;
   badges: string[];
   tags: string[];
   isPinned?: boolean;
@@ -35,19 +36,22 @@ export class JobPostsComponent implements OnInit {
 
   sortedJobs$ = combineLatest([this.jobsSubject, this.pinnedJobIds, this.savedJobIds]).pipe(
     map(([jobs, pinnedIds, savedIds]) => {
-      const enhancedJobs = jobs.map((job) => ({
-        ...job,
-        isPinned: pinnedIds.includes(job._id),
-        isSaved: savedIds.includes(job._id)
-      }));
+        const enhancedJobs = jobs.map((job) => ({
+            ...job,
+            isPinned: pinnedIds.includes(job._id),
+            isSaved: savedIds.includes(job._id),
+            date:this.calculateTimePosted(new Date(job.created_at), job.date),
+            originalPostingDate: this.calculateOriginalPostingDate(new Date(job.created_at), job.date) // Calculate original posting date
+        }));
 
-      return enhancedJobs.sort((a, b) => {
-        if (a.isPinned && !b.isPinned) return -1;
-        if (!a.isPinned && b.isPinned) return 1;
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      });
+        // Sort jobs by original posting date, latest first
+        return enhancedJobs.sort((a, b) => {
+          if (a.isPinned && !b.isPinned) return -1;
+          if (!a.isPinned && b.isPinned) return 1;
+            return b.originalPostingDate.getTime() - a.originalPostingDate.getTime(); // Descending order
+        });
     })
-  );
+);
 
   error: string | null = null;
   private apiUrl = environment.apiUrl;
@@ -123,6 +127,59 @@ export class JobPostsComponent implements OnInit {
   isSaved(jobId: string): boolean {
     return this.savedJobIds.value.includes(jobId);
   }
+  private calculateTimePosted(createdAt: Date, age: string): string {
+    // Parse the age string to get the number and the unit
+    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?)?/);
+    if (!ageMatch) return 'Unknown time ago'; // Handle unexpected format
+
+    const value = parseInt(ageMatch[1], 10);
+    const unit = ageMatch[2];
+
+    const now = new Date();
+    const originalPostingDate = new Date(createdAt);
+
+    // Adjust the original posting date based on the parsed age
+    if (unit === 'd' || unit === 'days') {
+        originalPostingDate.setDate(originalPostingDate.getDate() - value);
+    } else if (unit === 'h' || unit === 'hours') {
+        originalPostingDate.setHours(originalPostingDate.getHours() - value);
+    } else if (unit === 'weeks' || unit === 'week') {
+        originalPostingDate.setDate(originalPostingDate.getDate() - value * 7);
+    }
+
+    // Calculate the time difference
+    const diffInMs = now.getTime() - originalPostingDate.getTime();
+    const diffInHours = Math.floor(diffInMs / (1000 * 3600));
+
+    // Format the output based on the time difference
+    if (diffInHours < 24) {
+        return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`;
+    } else {
+        const diffInDays = Math.floor(diffInHours / 24);
+        return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
+    }
+}
+
+  private calculateOriginalPostingDate(createdAt: Date, age: string): Date {
+    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?)?/);
+    if (!ageMatch) return new Date(); // Handle unexpected format with current date
+
+    const value = parseInt(ageMatch[1], 10);
+    const unit = ageMatch[2];
+
+    const originalPostingDate = new Date(createdAt);
+
+    // Adjust the original posting date based on the parsed age
+    if (unit === 'd' || unit === 'days') {
+        originalPostingDate.setDate(originalPostingDate.getDate() - value);
+    } else if (unit === 'h' || unit === 'hours') {
+        originalPostingDate.setHours(originalPostingDate.getHours() - value);
+    } else if (unit === 'weeks' || unit === 'week') {
+        originalPostingDate.setDate(originalPostingDate.getDate() - value * 7);
+    }
+
+    return originalPostingDate;
+}
 
   togglePin(jobId: string): void {
     const currentPinnedIds = this.pinnedJobIds.value;
