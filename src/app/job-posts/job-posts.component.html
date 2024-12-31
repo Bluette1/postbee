@@ -14,7 +14,7 @@
         [class.pinned]="job.isPinned"
       >
         <div class="job-header">
-          <a (click)="trackView(job._id); $event.preventDefault; $event.stopPropagation()" [href]="job.link" target="_blank" class="job-link-title">
+          <a (click)="trackView(job._id); trackInteraction(job._id); $event.preventDefault; $event.stopPropagation()" [href]="job.link" target="_blank" class="job-link-title">
             <div class="company-logo" *ngIf="job.logo">
               <img [src]="job.logo" [alt]="job.company" (error)="logoLoaded = false" (load)="logoLoaded = true" *ngIf="logoLoaded" />
             </div>
@@ -33,7 +33,7 @@
           </button>
         </div>
 
-        <a (click)="trackView(job._id); $event.preventDefault; $event.stopPropagation()" [href]="job.link" target="_blank" class="job-link-content">
+        <a (click)="trackView(job._id); trackInteraction(job._id); $event.preventDefault; $event.stopPropagation()" [href]="job.link" target="_blank" class="job-link-content">
           <div class="job-details">
             <span class="location">{{ job.location }}</span>
             <span class="time">{{ job.time }}</span>

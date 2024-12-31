@@ -150,6 +150,19 @@ export class JobPostsComponent implements OnInit {
     });
   }
 
+  trackInteraction(jobId: string) {
+    if (this.authService.isLoggedIn) { // Check if user is logged in
+      this.jobInteractionService.trackInteraction(jobId).subscribe(
+        () => {
+          console.log('Interaction tracked successfully');
+        },
+        error => {
+          console.error('Error tracking interaction:', error);
+        }
+      );
+    }
+  }
+
   toggleSave(jobId: string): void {
     const currentSavedIds = this.savedJobIds.value;
     const newSavedIds = currentSavedIds.includes(jobId)

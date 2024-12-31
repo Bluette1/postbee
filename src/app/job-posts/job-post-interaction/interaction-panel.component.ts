@@ -50,7 +50,6 @@ export class InteractionPanelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.jobInteractionService.trackView(this.jobId).subscribe();
     this.isSaved = this.jobPostsComponent.isSaved(this.jobId);
 
     // Get initial interaction status

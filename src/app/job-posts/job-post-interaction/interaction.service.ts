@@ -80,6 +80,14 @@ export class JobInteractionService {
     );
   }
 
+  trackInteraction(jobId: string): Observable<void> {
+    return this.http.post<void>(
+      `${this.apiUrl}/${jobId}/interaction`,
+      {},
+      { headers: this.getHeaders() }
+    );
+  }
+
   getViewHistory(): Observable<JobInteraction[]> {
     return this.http.get<JobInteraction[]>(`${this.apiUrl}/viewed`, {
       headers: this.getHeaders(),
