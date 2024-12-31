@@ -1,4 +1,9 @@
 <div class="interaction-panel" (click)="$event.stopPropagation()">
+  <div class="view-info" *ngIf="viewCount">
+    <mat-icon>visibility</mat-icon>
+    <span>Viewed {{ viewCount }} times</span>
+    <span class="last-viewed">Last: {{ lastViewed | date:'short' }}</span>
+  </div>
   <div class="action-buttons">
     <button
       mat-icon-button

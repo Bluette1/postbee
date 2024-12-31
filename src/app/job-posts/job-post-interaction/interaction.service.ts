@@ -16,7 +16,7 @@ interface JobInteraction {
   providedIn: 'root',
 })
 export class JobInteractionService {
-  private apiUrl = 'api/jobs';
+  private apiUrl = 'http://0.0.0.0:5000/api/jobs';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

@@ -62,6 +62,7 @@ export class JobPostsComponent implements OnInit {
 
   error: string | null = null;
   private apiUrl = environment.apiUrl;
+  isLoading: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -74,6 +75,8 @@ export class JobPostsComponent implements OnInit {
     this.loadPinnedJobs();
     this.loadSavedJobs();
   }
+
+  logoLoaded = true;
 
   private checkJobLinkExists(link: string): Observable<boolean> {
     return this.http.head(link).pipe(
@@ -140,6 +143,13 @@ export class JobPostsComponent implements OnInit {
     }
   }
 
+  trackView(jobId: string) {
+    this.jobInteractionService.trackView(jobId).subscribe({
+      next: () => console.log(`View tracked for job ${jobId}`),
+      error: (err) => console.error('Failed to track view', err),
+    });
+  }
+
   toggleSave(jobId: string): void {
     const currentSavedIds = this.savedJobIds.value;
     const newSavedIds = currentSavedIds.includes(jobId)
@@ -180,7 +190,7 @@ export class JobPostsComponent implements OnInit {
 
   private calculateTimePosted(createdAt: Date, age: string): string {
     const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?|mo|months?|m)?/);
-    if (!ageMatch) return 'Unknown time ago'; // Handle unexpected format
+    if (!ageMatch) return ''; // Handle unexpected format
 
     const value = parseInt(ageMatch[1], 10);
     const unit = ageMatch[2];
