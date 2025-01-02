@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FollowUp } from '../../models/follow-up.model';
 import { AuthService } from '../../auth.service';
+import { environment } from '../../../environments/environment';
+
 
 interface JobInteraction {
   jobId: string;
@@ -16,7 +18,7 @@ interface JobInteraction {
   providedIn: 'root',
 })
 export class JobInteractionService {
-  private apiUrl = 'http://0.0.0.0:5000/api/jobs';
+  private apiUrl = `${environment.trackerApiUrl}/api/jobs`; 
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
