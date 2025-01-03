@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl; // Use environment variable
+  private apiUrl = environment.apiUrl; 
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -70,5 +70,10 @@ export class AuthService {
   public get isLoggedIn(): boolean {
     const user = localStorage.getItem('user');
     return user !== null;
+  }
+
+  public getToken(): string | null {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    return user ? user.accessToken : null;
   }
 }

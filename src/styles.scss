@@ -1,7 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 
 body {
@@ -10,3 +11,17 @@ body {
     font-style: normal;
   }
   
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-dialog-container {
+  padding: 24px;
+  background: white;
+  border-radius: 4px;
+}
+
+.cdk-overlay-container {
+  z-index: 1000;
+}
+
+

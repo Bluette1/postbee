@@ -1,0 +1,27 @@
+<div class="interaction-panel" (click)="$event.stopPropagation()">
+  <div class="view-info" *ngIf="viewCount">
+    <mat-icon>visibility</mat-icon>
+    <span>Viewed {{ viewCount }} times</span>
+    <span class="last-viewed">Last: {{ lastViewed | date:'short' }}</span>
+  </div>
+  <div class="action-buttons">
+    <button
+      mat-icon-button
+      [color]="isSaved ? 'accent' : ''"
+      (click)="toggleSave()"
+      matTooltip="Save to my list"
+      [@saveState]="isSaved ? 'saved' : 'unsaved'"
+    >
+      <mat-icon>{{ isSaved ? "bookmark" : "bookmark_border" }}</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      [color]="hasFollowUp ? 'accent' : ''"
+      (click)="openFollowUpForm(); $event.stopPropagation()"
+      matTooltip="Add follow-up"
+    >
+      <mat-icon>event_note</mat-icon>
+    </button>
+  </div>
+</div>
