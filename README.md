@@ -1,27 +1,113 @@
-# Postbee
+# PostBee
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.9.
+PostBee is a dynamic job posting platform designed to streamline the process of job management for both employers and job seekers. The application enables users to seamlessly create, manage, and apply for job postings while ensuring a user-friendly experience.
 
-## Development server
+![Feature Image](./dist/images/screenshot-postbee.png)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+[PostBee Deployment on Netlify](https://postbee.netlify.app/)
 
-## Code scaffolding
+## Key Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **User Authentication**:
+  - Secure sign-up, login, and logout functionalities to protect user accounts.
+- **Job Posting**:
+  - Employers can easily create and manage job listings with essential details.
+- **Responsive Design**:
+  - Built with TailwindCSS, PostBee offers a modern, responsive interface that adapts to various devices.
+- **Intuitive UI**:
+  - A clean and user-friendly layout that simplifies navigation and enhances user engagement.
 
-## Build
+## Technologies Used
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Frontend
 
-## Running unit tests
+- **AngularJS**
+- **TypeScript**
+- **TailwindCSS**
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Backend
 
-## Running end-to-end tests
+- **Ruby on Rails**
+- **Python (Flask)**
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Database
 
-## Further help
+- **MongoDB**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Microservices
+
+- **Docker**
+- **Pika**
+- **RabbitMQ**
+- **Bunny**
+- **SideKiq**
+- **Celery**
+
+## Installation
+
+To set up the PostBee project locally, follow these steps:
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/Bluette1/postbee.git
+   cd postbee
+   ```
+
+2. **Install the necessary dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**:
+
+   ```bash
+   ng serve
+   ```
+
+4. **Open your browser** and navigate to `http://localhost:4200` to view the app.
+
+## Usage
+
+### For Employers:
+
+- Sign up and create job listings.
+- Manage your postings easily through your dashboard.
+
+### For Job Seekers:
+
+- Browse job postings.
+- Apply for positions and manage your applications through your profile.
+
+## Contributing
+
+We welcome contributions to PostBee! Here's how you can help:
+
+1. **Fork the repository**.
+2. **Create a new feature branch**:
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. **Commit your changes**:
+   ```bash
+   git commit -m 'Add some feature'
+   ```
+4. **Push to the branch**:
+   ```bash
+   git push origin feature/YourFeature
+   ```
+5. **Open a Pull Request**.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Inspired by the need for efficient job management solutions.
+- Thanks to all contributors and users for their feedback and support.
+
+## Contact
+
+For inquiries, please reach out to the project maintainer at marylene.sawyer@gmail.com.
