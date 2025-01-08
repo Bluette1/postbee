@@ -11,16 +11,26 @@
       <div
         *ngFor="let job of jobs"
         class="job-card"
+        [attr.id]="getSlugifiedTitle(job.title, job.company_title)"
         [class.pinned]="job.isPinned"
       >
         <div class="job-header">
-          <a (click)="trackView(job._id); trackInteraction(job._id); $event.preventDefault; $event.stopPropagation()" [href]="job.link" target="_blank" class="job-link-title">
+          <a
+            (click)="
+              trackView(job._id);
+              trackInteraction(job._id);
+              ($event.preventDefault);
+              $event.stopPropagation()
+            "
+            [href]="job.link"
+            target="_blank"
+            class="job-link-title"
+          >
             <div class="company-logo" *ngIf="job.logo">
-              <img [src]="job.logo" [alt]="job.company" (error)="logoLoaded = false" (load)="logoLoaded = true" *ngIf="logoLoaded" />
+              <img [src]="job.logo" [alt]="job.company_title" />
             </div>
             <div class="job-title-section">
               <h2>{{ job.title }}</h2>
-              <h3>{{ job.company }}</h3>
             </div>
           </a>
           <button
@@ -33,7 +43,17 @@
           </button>
         </div>
 
-        <a (click)="trackView(job._id); trackInteraction(job._id); $event.preventDefault; $event.stopPropagation()" [href]="job.link" target="_blank" class="job-link-content">
+        <a
+          (click)="
+            trackView(job._id);
+            trackInteraction(job._id);
+            ($event.preventDefault);
+            $event.stopPropagation()
+          "
+          [href]="job.link"
+          target="_blank"
+          class="job-link-content"
+        >
           <div class="job-details">
             <span class="location">{{ job.location }}</span>
             <span class="time">{{ job.time }}</span>
@@ -41,7 +61,9 @@
           </div>
 
           <div class="badges" *ngIf="job.badges?.length">
-            <span class="badge" *ngFor="let badge of job.badges">{{ badge }}</span>
+            <span class="badge" *ngFor="let badge of job.badges">{{
+              badge
+            }}</span>
           </div>
 
           <div class="tags" *ngIf="job.tags?.length">
