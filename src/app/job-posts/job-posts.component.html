@@ -27,7 +27,13 @@
             class="job-link-title"
           >
             <div class="company-logo" *ngIf="job.logo">
-              <img [src]="job.logo" [alt]="job.company_title" />
+              <img 
+              [src]="job.logo" 
+              [alt]="job.company_title" 
+              (error)="logoLoaded[job._id] = false;" 
+              (load)="logoLoaded[job._id] = true;" 
+              *ngIf="logoLoaded[job._id]" 
+            />
             </div>
             <div class="job-title-section">
               <h2>{{ job.title }}</h2>

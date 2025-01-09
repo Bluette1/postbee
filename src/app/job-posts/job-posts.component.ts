@@ -29,6 +29,7 @@ interface Job {
   styleUrls: ['./job-posts.component.scss'],
 })
 export class JobPostsComponent implements OnInit {
+  logoLoaded: { [key: string]: boolean } = {}; // Object to track loading state for each job
   private jobsSubject = new BehaviorSubject<Job[]>([]);
   private pinnedJobIds = new BehaviorSubject<string[]>([]);
   private savedJobIds = new BehaviorSubject<string[]>([]);
@@ -62,13 +63,21 @@ export class JobPostsComponent implements OnInit {
 
   error: string | null = null;
   private apiUrl = environment.apiUrl;
+
   isLoading: boolean = false;
 
   constructor(
     private http: HttpClient,
     private jobInteractionService: JobInteractionService,
     private authService: AuthService
-  ) {}
+  ) {
+    // Initialize logoLoaded for each job in ngOnInit
+    this.sortedJobs$.subscribe((jobs) => {
+      jobs.forEach((job) => {
+        this.logoLoaded[job._id] = true; // Assume logo is loaded initially
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.fetchJobs();
