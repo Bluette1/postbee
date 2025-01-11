@@ -5,11 +5,11 @@ import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { JobInteractionService } from './job-post-interaction/interaction.service';
 import { AuthService } from '../auth.service';
+import { slugify } from '../utils/slugify';
 
 interface Job {
   _id: string;
   title: string;
-  company: string;
   logo: string;
   link: string;
   company_link: string;
@@ -29,6 +29,7 @@ interface Job {
   styleUrls: ['./job-posts.component.scss'],
 })
 export class JobPostsComponent implements OnInit {
+  logoLoaded: { [key: string]: boolean } = {}; // Object to track loading state for each job
   private jobsSubject = new BehaviorSubject<Job[]>([]);
   private pinnedJobIds = new BehaviorSubject<string[]>([]);
   private savedJobIds = new BehaviorSubject<string[]>([]);
@@ -62,13 +63,21 @@ export class JobPostsComponent implements OnInit {
 
   error: string | null = null;
   private apiUrl = environment.apiUrl;
+
   isLoading: boolean = false;
 
   constructor(
     private http: HttpClient,
     private jobInteractionService: JobInteractionService,
     private authService: AuthService
-  ) {}
+  ) {
+    // Initialize logoLoaded for each job in ngOnInit
+    this.sortedJobs$.subscribe((jobs) => {
+      jobs.forEach((job) => {
+        this.logoLoaded[job._id] = true; // Assume logo is loaded initially
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.fetchJobs();
@@ -76,13 +85,28 @@ export class JobPostsComponent implements OnInit {
     this.loadSavedJobs();
   }
 
-  logoLoaded = true;
-
   private checkJobLinkExists(link: string): Observable<boolean> {
     return this.http.head(link).pipe(
       map(() => true),
       catchError(() => of(false)) // Return false if the link does not exist
     );
+  }
+
+  private removeDuplicates(jobs: Job[]): Job[] {
+    const seen = new Set<string>();
+    return jobs.filter((job) => {
+      const identifier = `${job.title}-${job.company_link}`;
+      if (seen.has(identifier)) {
+        return false; // Duplicate found
+      } else {
+        seen.add(identifier);
+        return true; // Keep this job
+      }
+    });
+  }
+
+  getSlugifiedTitle(jobTitle: string, companyName: string): string {
+    return slugify(jobTitle, companyName);
   }
 
   fetchJobs(): void {
@@ -97,7 +121,10 @@ export class JobPostsComponent implements OnInit {
             )
           )
         ).subscribe((jobsWithLinks) => {
-          this.jobsSubject.next(jobsWithLinks);
+          // Remove duplicates based on title and company link
+          const uniqueJobs = this.removeDuplicates(jobsWithLinks);
+
+          this.jobsSubject.next(uniqueJobs);
         });
       },
       (err) => {
@@ -151,12 +178,13 @@ export class JobPostsComponent implements OnInit {
   }
 
   trackInteraction(jobId: string) {
-    if (this.authService.isLoggedIn) { // Check if user is logged in
+    if (this.authService.isLoggedIn) {
+      // Check if user is logged in
       this.jobInteractionService.trackInteraction(jobId).subscribe(
         () => {
           console.log('Interaction tracked successfully');
         },
-        error => {
+        (error) => {
           console.error('Error tracking interaction:', error);
         }
       );

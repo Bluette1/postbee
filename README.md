@@ -1,72 +1,113 @@
 # PostBee
 
-PostBee is a dynamic job posting platform aimed at simplifying job management for both employers and job seekers. The application provides a seamless experience for creating, managing, and applying for job postings.
+PostBee is a dynamic job posting platform designed to streamline the process of job management for both employers and job seekers. The application enables users to seamlessly create, manage, and apply for job postings while ensuring a user-friendly experience.
+
+![Feature Image](./dist/images/screenshot-postbee.png)
+
+[PostBee Deployment on Netlify](https://postbee.netlify.app/)
 
 ## Key Features
 
-- **User Authentication**: 
+- **User Authentication**:
   - Secure sign-up, login, and logout functionalities to protect user accounts.
-
-- **Job Posting**: 
+- **Job Posting**:
   - Employers can easily create and manage job listings with essential details.
-
-- **Responsive Design**: 
+- **Responsive Design**:
   - Built with TailwindCSS, PostBee offers a modern, responsive interface that adapts to various devices.
-
-- **Intuitive UI**: 
+- **Intuitive UI**:
   - A clean and user-friendly layout that simplifies navigation and enhances user engagement.
 
 ## Technologies Used
-  - AngularJS
-  - TypeScript
-  - TailwindCSS
+
+### Frontend
+
+- **AngularJS**
+- **TypeScript**
+- **TailwindCSS**
+
+### Backend
+
+- **Ruby on Rails**
+- **Python (Flask)**
+
+### Database
+
+- **MongoDB**
+
+### Microservices
+
+- **Docker**
+- **Pika**
+- **RabbitMQ**
+- **Bunny**
+- **SideKiq**
+- **Celery**
 
 ## Installation
 
-1. Clone the repository:
+To set up the PostBee project locally, follow these steps:
+
+1. **Clone the repository**:
+
    ```bash
-   git clone https://github.com/yourusername/postbee.git
+   git clone https://github.com/Bluette1/postbee.git
    cd postbee
    ```
 
-2. Install the necessary dependencies:
+2. **Install the necessary dependencies**:
+
    ```bash
-   # For frontend
-   cd postbee
    npm install
-
    ```
+
+3. **Start the development server**:
+
+   ```bash
+   ng serve
+   ```
+
+4. **Open your browser** and navigate to `http://localhost:4200` to view the app.
 
 ## Usage
 
-- **Employer**: Sign up and create job listings. Manage your postings easily through your dashboard.
-- **Job Seeker**: Browse job postings, apply for positions, and manage your applications through your profile.
+### For Employers:
+
+- Sign up and create job listings.
+- Manage your postings easily through your dashboard.
+
+### For Job Seekers:
+
+- Browse job postings.
+- Apply for positions and manage your applications through your profile.
 
 ## Contributing
 
-1. Fork the repository.
-2. Create a new feature branch:
+We welcome contributions to PostBee! Here's how you can help:
+
+1. **Fork the repository**.
+2. **Create a new feature branch**:
    ```bash
    git checkout -b feature/YourFeature
    ```
-3. Commit your changes:
+3. **Commit your changes**:
    ```bash
    git commit -m 'Add some feature'
    ```
-4. Push to the branch:
+4. **Push to the branch**:
    ```bash
    git push origin feature/YourFeature
    ```
-5. Open a Pull Request.
-
-[User Stories]()
+5. **Open a Pull Request**.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
 - Inspired by the need for efficient job management solutions.
 - Thanks to all contributors and users for their feedback and support.
 
+## Contact
+
+For inquiries, please reach out to the project maintainer at marylene.sawyer@gmail.com.
