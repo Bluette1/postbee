@@ -62,7 +62,7 @@ export class JobInteractionService {
     followUp: Partial<FollowUp>
   ): Observable<FollowUp> {
     return this.http.put<FollowUp>(
-      `${this.apiUrl}/${jobId}/follow-ups/${followUp.id}`,
+      `${this.apiUrl}/${jobId}/follow-ups`,
       followUp,
       { headers: this.getHeaders() }
     );
