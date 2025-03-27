@@ -53,6 +53,8 @@ export class JobPostsComponent implements OnInit {
 
       return enhancedJobs.sort((a, b) => {
         if (a.isPinned && !b.isPinned) return -1;
+        if (!a.originalPostingDate || !b.originalPostingDate) return 0;
+
         if (!a.isPinned && b.isPinned) return 1;
         return (
           b.originalPostingDate.getTime() - a.originalPostingDate.getTime()
@@ -228,61 +230,76 @@ export class JobPostsComponent implements OnInit {
       );
     }
   }
-
   private calculateTimePosted(createdAt: Date, age: string): string {
-    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?|mo|months?|m)?/);
-    if (!ageMatch) return ''; // Handle unexpected format
-
-    const value = parseInt(ageMatch[1], 10);
-    const unit = ageMatch[2];
+    const originalPostingDate = this.calculateOriginalPostingDate(
+      createdAt,
+      age
+    );
+    if (!originalPostingDate) return '';
 
     const now = new Date();
-    const originalPostingDate = new Date(createdAt);
-
-    // Adjust the original posting date based on the parsed age
-    if (unit === 'd' || unit === 'days') {
-      originalPostingDate.setDate(originalPostingDate.getDate() - value);
-    } else if (unit === 'h' || unit === 'hours') {
-      originalPostingDate.setHours(originalPostingDate.getHours() - value);
-    } else if (unit === 'weeks' || unit === 'week') {
-      originalPostingDate.setDate(originalPostingDate.getDate() - value * 7);
-    } else if (unit === 'mo' || unit === 'months' || unit === 'm') {
-      originalPostingDate.setMonth(originalPostingDate.getMonth() - value);
-    }
-
     const diffInMs = now.getTime() - originalPostingDate.getTime();
     const diffInDays = Math.floor(diffInMs / (1000 * 3600 * 24));
 
     // Format the output based on the time difference
-    if (diffInDays >= 100) {
+    if (diffInDays >= 365) {
+      const years = Math.floor(diffInDays / 365);
+      return `${years} year${years !== 1 ? 's' : ''} ago`;
+    } else if (diffInDays >= 30) {
+      const months = Math.floor(diffInDays / 30);
+      return `${months} month${months !== 1 ? 's' : ''} ago`;
+    } else if (diffInDays >= 7) {
       const weeks = Math.floor(diffInDays / 7);
       return `${weeks} week${weeks !== 1 ? 's' : ''} ago`;
-    } else if (diffInDays < 1) {
-      const diffInHours = Math.floor(diffInMs / (1000 * 3600));
-      return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`;
-    } else {
+    } else if (diffInDays >= 1) {
       return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
+    } else {
+      const diffInHours = Math.floor(diffInMs / (1000 * 3600));
+      if (diffInHours >= 1) {
+        return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`;
+      } else {
+        const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+        return `${diffInMinutes} minute${diffInMinutes !== 1 ? 's' : ''} ago`;
+      }
     }
   }
 
   private calculateOriginalPostingDate(createdAt: Date, age: string): Date {
-    const ageMatch = age.match(/(\d+)\s*(d|h|weeks?|hours?|mo|months?|m)?/);
-    if (!ageMatch) return new Date(); // Handle unexpected format
+    const ageMatch = age.match(
+      /(\d+)\s*(d|day|days|h|hr|hrs|hour|hours|w|wk|wks|week|weeks|mo|month|months|m|min|mins|minute|minutes|y|yr|yrs|year|years)s?(?:\s*ago)?/i
+    );
+
+    if (!ageMatch) {
+      console.warn(
+        `Could not parse date format: ${age}, using createdAt as fallback`
+      );
+      return new Date(createdAt);
+    }
 
     const value = parseInt(ageMatch[1], 10);
-    const unit = ageMatch[2];
+    const unit = ageMatch[2].toLowerCase();
 
     const originalPostingDate = new Date(createdAt);
 
     // Adjust the original posting date based on the parsed age
-    if (unit === 'd' || unit === 'days') {
+    if (unit === 'd' || unit.startsWith('day')) {
       originalPostingDate.setDate(originalPostingDate.getDate() - value);
-    } else if (unit === 'h' || unit === 'hours') {
+    } else if (
+      unit === 'h' ||
+      unit.startsWith('hr') ||
+      unit.startsWith('hour')
+    ) {
       originalPostingDate.setHours(originalPostingDate.getHours() - value);
-    } else if (unit === 'weeks' || unit === 'week') {
+    } else if (unit === 'w' || unit === 'wk' || unit.startsWith('week')) {
       originalPostingDate.setDate(originalPostingDate.getDate() - value * 7);
-    } else if (unit === 'mo' || unit === 'months' || unit === 'm') {
+    } else if (unit === 'mo' || unit.startsWith('month')) {
       originalPostingDate.setMonth(originalPostingDate.getMonth() - value);
+    } else if (unit === 'm' || unit === 'min' || unit.startsWith('minute')) {
+      originalPostingDate.setMinutes(originalPostingDate.getMinutes() - value);
+    } else if (unit === 'y' || unit === 'yr' || unit.startsWith('year')) {
+      originalPostingDate.setFullYear(
+        originalPostingDate.getFullYear() - value
+      );
     }
 
     return originalPostingDate;
