@@ -92,7 +92,7 @@ import { FollowUp, FollowUpStatus } from '../../models/follow-up.model';
       }
 
       mat-dialog-content {
-        min-width: 400px;
+        min-width: 200px;
       }
 
       textarea {
