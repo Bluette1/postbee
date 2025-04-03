@@ -6,6 +6,10 @@ PostBee is a dynamic job posting platform designed to streamline the process of 
 
 [PostBee Deployment on Netlify](https://postbee.netlify.app/)
 
+### Backend
+- [Postbee API](https://github.com/Bluette1/postbee-api)
+- [Postbee Tracker API](https://github.com/Bluette1/postbee-tracker-api)
+
 ## Key Features
 
 - **User Authentication**:
