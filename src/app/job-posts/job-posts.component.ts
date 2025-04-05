@@ -34,6 +34,12 @@ export class JobPostsComponent implements OnInit {
   private pinnedJobIds = new BehaviorSubject<string[]>([]);
   private savedJobIds = new BehaviorSubject<string[]>([]);
 
+  // Pagination properties
+  currentPage = 1;
+  postsPerPage = 10;
+  totalPages = 1;
+  allJobs: Job[] = []; // Store all jobs
+
   sortedJobs$ = combineLatest([
     this.jobsSubject,
     this.pinnedJobIds,
@@ -44,22 +50,33 @@ export class JobPostsComponent implements OnInit {
         ...job,
         isPinned: pinnedIds.includes(job._id),
         isSaved: savedIds.includes(job._id),
-        date: this.calculateTimePosted(new Date(job.created_at), job.date),
+        date: job.date,
+        // this.calculateTimePosted(new Date(job.created_at), job.date),
         originalPostingDate: this.calculateOriginalPostingDate(
           new Date(job.created_at),
           job.date
         ),
       }));
 
-      return enhancedJobs.sort((a, b) => {
+      // Store all sorted jobs
+      this.allJobs = enhancedJobs.sort((a, b) => {
         if (a.isPinned && !b.isPinned) return -1;
         if (!a.originalPostingDate || !b.originalPostingDate) return 0;
 
         if (!a.isPinned && b.isPinned) return 1;
         return (
-          b.originalPostingDate.getTime() - a.originalPostingDate.getTime()
+          // b.originalPostingDate.getTime() - a.originalPostingDate.getTime()
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         ); // Descending order
       });
+
+      // Calculate total pages based on all jobs
+      this.totalPages = Math.ceil(this.allJobs.length / this.postsPerPage);
+
+      // Return only the jobs for current page
+      const startIndex = (this.currentPage - 1) * this.postsPerPage;
+      const endIndex = startIndex + this.postsPerPage;
+      return this.allJobs.slice(startIndex, endIndex);
     })
   );
 
@@ -85,6 +102,48 @@ export class JobPostsComponent implements OnInit {
     this.fetchJobs();
     this.loadPinnedJobs();
     this.loadSavedJobs();
+  }
+
+  // Add pagination methods
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      // Trigger re-evaluation of sortedJobs$ by emitting current values
+      this.jobsSubject.next(this.jobsSubject.value);
+    }
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  // Generate an array of page numbers for pagination display
+  getPageNumbers(): number[] {
+    // For large number of pages, show only a subset around current page
+    const maxVisiblePages = 5;
+    if (this.totalPages <= maxVisiblePages) {
+      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    }
+
+    let startPage = Math.max(
+      1,
+      this.currentPage - Math.floor(maxVisiblePages / 2)
+    );
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage > this.totalPages) {
+      endPage = this.totalPages;
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
   }
 
   private checkJobLinkExists(link: string): Observable<boolean> {
@@ -230,6 +289,7 @@ export class JobPostsComponent implements OnInit {
       );
     }
   }
+
   private calculateTimePosted(createdAt: Date, age: string): string {
     const originalPostingDate = this.calculateOriginalPostingDate(
       createdAt,
