@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JobPostingComponent } from './job-posting/job-posting.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DashboardComponent,
     SignUpComponent,
     InteractionPanelComponent,
-    FollowUpFormComponent
+    FollowUpFormComponent,
+    JobPostingComponent
   ],
   imports: [
     HttpClientModule,
