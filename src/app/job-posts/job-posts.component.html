@@ -27,13 +27,13 @@
             class="job-link-title"
           >
             <div class="company-logo" *ngIf="job.logo">
-              <img 
-              [src]="job.logo" 
-              [alt]="job.company_title" 
-              (error)="logoLoaded[job._id] = false;" 
-              (load)="logoLoaded[job._id] = true;" 
-              *ngIf="logoLoaded[job._id]" 
-            />
+              <img
+                [src]="job.logo"
+                [alt]="job.company_title"
+                (error)="logoLoaded[job._id] = false"
+                (load)="logoLoaded[job._id] = true"
+                *ngIf="logoLoaded[job._id]"
+              />
             </div>
             <div class="job-title-section">
               <h2>{{ job.title }}</h2>
@@ -97,5 +97,44 @@
         ></app-interaction-panel>
       </div>
     </ng-container>
+  </div>
+
+  <!-- Pagination controls -->
+  <div class="pagination-controls" *ngIf="totalPages > 1">
+    <div class="pagination-info">
+      Showing page {{ currentPage }} of {{ totalPages }} ({{
+        allJobs.length
+      }}
+      total jobs)
+    </div>
+
+    <div class="pagination-buttons">
+      <button
+        class="pagination-button"
+        [disabled]="currentPage === 1"
+        (click)="prevPage()"
+      >
+        <i class="material-icons">chevron_left</i> Previous
+      </button>
+
+      <div class="page-numbers">
+        <button
+          *ngFor="let page of getPageNumbers()"
+          class="page-number-button"
+          [class.active]="currentPage === page"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </div>
+
+      <button
+        class="pagination-button"
+        [disabled]="currentPage === totalPages"
+        (click)="nextPage()"
+      >
+        Next <i class="material-icons">chevron_right</i>
+      </button>
+    </div>
   </div>
 </div>
