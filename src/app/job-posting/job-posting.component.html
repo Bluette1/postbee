@@ -1,1 +1,168 @@
-<p>job-posting works!</p>
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-3xl mb-4 text-center">Post a Job</h1>
+    
+    <!-- Step Indicator -->
+    <div class="flex justify-between mb-6 relative">
+        <div class="flex flex-col items-center">
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center mb-2 {{ currentStep === 1 ? 'bg-blue-600 text-white' : '' }}">1</div>
+            <span class="{{ currentStep === 1 ? 'text-blue-600 font-bold' : 'text-gray-600' }}">Job Details</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center mb-2 {{ currentStep === 2 ? 'bg-blue-600 text-white' : '' }}">2</div>
+            <span class="{{ currentStep === 2 ? 'text-blue-600 font-bold' : 'text-gray-600' }}">Preview</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center mb-2 {{ currentStep === 3 ? 'bg-blue-600 text-white' : '' }}">3</div>
+            <span class="{{ currentStep === 3 ? 'text-blue-600 font-bold' : 'text-gray-600' }}">Schedule Consultation</span>
+        </div>
+    </div>
+
+    <!-- Step 1: Job Details Form -->
+    <form *ngIf="currentStep === 1" (ngSubmit)="submitJobDetails()" class="space-y-4">
+        <div class="border p-4 rounded-md bg-gray-50">
+            <h3 class="font-semibold">Job Information</h3>
+            <input type="text" [(ngModel)]="job.title" class="w-full p-2 border rounded" placeholder="Job Title" required />
+            <div class="mb-4">
+                <label class="block mb-1">Category</label>
+                <select [(ngModel)]="job.category" class="w-full p-2 border rounded" required>
+                    <option value="">Select Category</option>
+                    <option value="development">Development</option>
+                    <option value="design">Design</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="management">Management</option>
+                    <option value="sales">Sales</option>
+                    <option value="customer_support">Customer Support</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1">Sub-Category</label>
+                <select [(ngModel)]="job.subCategory" class="w-full p-2 border rounded">
+                    <option value="">Select Sub-Category</option>
+                    <option *ngFor="let subCat of subCategories[job.category]" [value]="subCat">{{ subCat }}</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1">Skills (select multiple)</label>
+                <select multiple [(ngModel)]="job.skills" class="w-full p-2 border rounded">
+                    <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                    <option value="react">React</option>
+                    <option value="angular">Angular</option>
+                    <option value="node">Node.js</option>
+                    <option value="ui_design">UI Design</option>
+                    <option value="ux_design">UX Design</option>
+                    <option value="project_management">Project Management</option>
+                    <option value="agile">Agile</option>
+                    <option value="devops">DevOps</option>
+                </select>
+                <small class="form-text text-muted">Hold Ctrl (or Cmd on Mac) to select multiple skills</small>
+            </div>
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" [(ngModel)]="job.worldwide" class="mr-2" />
+                    This job is open worldwide
+                </label>
+            </div>
+            <div *ngIf="!job.worldwide">
+                <div class="mb-4">
+                    <label class="block mb-1">Country</label>
+                    <select [(ngModel)]="job.country" class="w-full p-2 border rounded">
+                        <option value="">Select Country</option>
+                        <option value="us">United States</option>
+                        <option value="ca">Canada</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="au">Australia</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1">Region/State</label>
+                    <input type="text" [(ngModel)]="job.region" class="w-full p-2 border rounded" placeholder="Region/State" />
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1">Time Zone Restrictions (select multiple if applicable)</label>
+                    <select multiple [(ngModel)]="job.timezones" class="w-full p-2 border rounded">
+                        <option value="est">Eastern Time (EST/EDT)</option>
+                        <option value="cst">Central Time (CST/CDT)</option>
+                        <option value="mst">Mountain Time (MST/MDT)</option>
+                        <option value="pst">Pacific Time (PST/PDT)</option>
+                        <option value="gmt">GMT/UTC</option>
+                        <option value="cet">Central European Time (CET)</option>
+                        <option value="ist">India Standard Time (IST)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1">Salary Range</label>
+                <select [(ngModel)]="job.salaryRange" class="w-full p-2 border rounded">
+                    <option value="">Select Salary Range</option>
+                    <option value="30k-50k">$30,000 - $50,000</option>
+                    <option value="50k-70k">$50,000 - $70,000</option>
+                    <option value="70k-90k">$70,000 - $90,000</option>
+                    <option value="90k-110k">$90,000 - $110,000</option>
+                    <option value="110k-130k">$110,000 - $130,000</option>
+                    <option value="130k+">$130,000+</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1">Job Type</label>
+                <select [(ngModel)]="job.jobType" class="w-full p-2 border rounded">
+                    <option value="fulltime">Full-Time</option>
+                    <option value="contract">Contract</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1">Application Link or Email</label>
+                <input type="text" [(ngModel)]="job.applicationLink" class="w-full p-2 border rounded" placeholder="Application Link or Email" required />
+            </div>
+            <div class="mb-4">
+                <label class="block mb-1">Job Description</label>
+                <textarea [(ngModel)]="job.description" class="w-full p-2 border rounded" rows="4" placeholder="Job Description" required></textarea>
+            </div>
+        </div>
+
+        <div class="border p-4 rounded-md bg-gray-50 mt-4">
+            <h3 class="font-semibold">Company Information</h3>
+            <input type="text" [(ngModel)]="company.name" class="w-full p-2 border rounded" placeholder="Company Name" required />
+            <input type="text" [(ngModel)]="company.hq" class="w-full p-2 border rounded" placeholder="Company HQ" required />
+            <div class="mb-4">
+                <label class="block mb-1">Company Logo</label>
+                <!-- <input type="file" (change)="handleFileUpload($event.target.files)" class="w-full p-2 border rounded" accept="image/*" /> -->
+            </div>
+            <input type="url" [(ngModel)]="company.website" class="w-full p-2 border rounded" placeholder="Company Website URL" required />
+            <input type="email" [(ngModel)]="company.email" class="w-full p-2 border rounded" placeholder="Company Email" required />
+            <textarea [(ngModel)]="company.description" class="w-full p-2 border rounded" rows="4" placeholder="Company Description"></textarea>
+        </div>
+
+        <button type="button" (click)="goToStep(2)" class="bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700">Preview</button>
+    </form>
+    
+    <!-- Step 2: Preview -->
+    <div *ngIf="currentStep === 2">
+        <div class="border p-4 rounded-md bg-white shadow-md">
+            <h2>{{ job.title }}</h2>
+            <p><strong>Company:</strong> {{ company.name }} • {{ company.hq }}</p>
+            <p><strong>Job Type:</strong> {{ job.jobType }}</p>
+            <p><strong>Category:</strong> {{ job.category }}</p>
+            <p><strong>Skills:</strong> <span *ngFor="let skill of job.skills">{{ skill }} </span></p>
+            <p><strong>Salary Range:</strong> {{ job.salaryRange }}</p>
+            <p><strong>Job Description:</strong> {{ job.description }}</p>
+            <p><strong>Application Link:</strong> {{ job.applicationLink }}</p>
+            <p><strong>Company Website:</strong> <a [href]="company.website" target="_blank">{{ company.website }}</a></p>
+            <div *ngIf="company.logo">
+                <img [src]="company.logo" alt="{{ company.name }} Logo" class="mt-2 max-w-xs" />
+            </div>
+        </div>
+        <button type="button" (click)="goToStep(1)" class="bg-gray-400 text-white rounded-md px-4 py-2 hover:bg-gray-500">Edit</button>
+        <button type="button" (click)="goToStep(3)" class="bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700">Schedule Consultation</button>
+    </div>
+
+    <!-- Step 3: Calendly Integration -->
+    <div *ngIf="currentStep === 3">
+        <div class="alert bg-blue-100 p-4 rounded-md">
+            Your job posting will be published after the consultation.
+        </div>
+        <div class="calendly-inline-widget" data-url="https://calendly.com/postbee/job-consultation"></div>
+        <button type="button" (click)="goToStep(2)" class="bg-gray-400 text-white rounded-md px-4 py-2 hover:bg-gray-500">Back to Preview</button>
+    </div>
+</div>
