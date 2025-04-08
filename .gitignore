@@ -41,3 +41,6 @@ testem.log
 Thumbs.db
 
 /src/environments/environment*.ts
+
+prev*
+.vscode
