@@ -23,4 +23,8 @@ export class HeaderComponent {
   logout() {
     this.authService.logout();
   }
+
+  navigateToPostJob() {
+    this.router.navigate(['/job-posts/new']);
+  }
 }
