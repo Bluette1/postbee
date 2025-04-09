@@ -139,11 +139,17 @@ export class JobPostingComponent {
         '-'
       )}`;
 
-      // Create the command to upload the file
+      // Convert File to ArrayBuffer
+      const fileBuffer = await this.fileToArrayBuffer(this.imageFile);
+
+      // Convert ArrayBuffer to Uint8Array
+      const uint8Array = new Uint8Array(fileBuffer);
+
+      // Create the command to upload the file using the Uint8Array
       const command = new PutObjectCommand({
         Bucket: environment.aws.bucketName,
         Key: fileName,
-        Body: this.imageFile,
+        Body: uint8Array, // Use Uint8Array instead of ArrayBuffer
         ContentType: this.imageFile.type,
         ACL: 'public-read',
       });
@@ -151,8 +157,8 @@ export class JobPostingComponent {
       // Execute the command
       await this.s3Client.send(command);
 
-      // Construct the URL (this assumes your bucket is configured for public access)
-      this.company.logoUrl = `https://${command.input.Bucket}.s3.${this.s3Client.config.region}.amazonaws.com/${fileName}`;
+      // Construct the URL
+      this.company.logoUrl = `https://${environment.aws.bucketName}.s3.${this.s3Client.config.region}.amazonaws.com/${fileName}`;
 
       console.log('Logo uploaded successfully to:', this.company.logoUrl);
 
@@ -162,6 +168,16 @@ export class JobPostingComponent {
       console.error('Error uploading to S3:', error);
       throw error;
     }
+  }
+
+  // Helper function to convert File to ArrayBuffer
+  private fileToArrayBuffer(file: File): Promise<ArrayBuffer> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as ArrayBuffer);
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(file);
+    });
   }
 
   constructor(private jobService: JobService) {}
