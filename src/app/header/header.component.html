@@ -1,18 +1,18 @@
 <header
-  class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center shadow-md"
+  class="text-xs md:text-base bg-blue-600 text-white py-4 px-6 flex md:justify-between items-center shadow-md"
 >
   <a routerLink="/" class="text-2xl font-bold no-underline">PostBee</a>
   <div class="flex items-center">
     <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
       <button
         (click)="navigateToLogin()"
-        class="bg-white text-blue-600 rounded-md px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md mr-2"
+        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md mr-2 ml-2 md:ml-0"
       >
         Login
       </button>
       <button
         (click)="navigateToSignUp()"
-        class="bg-white text-blue-600 rounded-md px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
+        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
       >
         Sign Up
       </button>
@@ -20,14 +20,14 @@
     <ng-template #loggedInTemplate>
       <button
         (click)="logout()"
-        class="bg-white text-blue-600 rounded-md px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
+        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
       >
         Logout
       </button>
     </ng-template>
     <button
       (click)="navigateToPostJob()"
-      class="bg-customBlue text-white rounded-md px-4 py-2 hover:bg-yellow-600 transition duration-200 shadow-md ml-4"
+      class="bg-customBlue text-white rounded-md px-2 md:px-4 py-2 hover:bg-yellow-600 transition duration-200 shadow-md ml-2 md:ml-4 "
     >
       Post a Job
     </button>
