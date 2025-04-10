@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prebuild": "node set-env.js",
     "build": "ng build --configuration production",
+    "postbuild": "echo \"/* /index.html 200\" > dist/postbee/_redirects",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -24,6 +26,7 @@
     "@aws-sdk/client-s3": "^3.782.0",
     "@aws-sdk/s3-request-presigner": "^3.782.0",
     "aws-sdk": "^2.1692.0",
+    "dotenv": "^16.4.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

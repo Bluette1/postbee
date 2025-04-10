@@ -44,3 +44,5 @@ Thumbs.db
 
 prev*
 .vscode
+dist/
+.env
