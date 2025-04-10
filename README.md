@@ -2,7 +2,7 @@
 
 PostBee is a dynamic job posting platform designed to streamline the process of job management for both employers and job seekers. The application enables users to seamlessly create, manage, and apply for job postings while ensuring a user-friendly experience.
 
-![Feature Image](./dist/images/screenshot-postbee.png)
+![Feature Image](./src/assets/images/screenshot-postbee.png)
 
 [PostBee Deployment on Netlify](https://postbee.netlify.app/)
 
