@@ -174,9 +174,11 @@ export class JobPostsComponent implements OnInit {
     const apiUrl = `${this.apiUrl}/job_posts`;
     this.http.get<Job[]>(apiUrl).subscribe(
       (data) => {
+        // Use sliced data for now to avoid overwhelming the web page
+        const slicedData = data.slice(0, Math.ceil((data.length * 2) / 3));
         // Check link existence for each job
         combineLatest(
-          data.map((job) =>
+          slicedData.map((job) =>
             this.checkJobLinkExists(job.link).pipe(
               map((exists) => ({ ...job, linkExists: exists }))
             )
