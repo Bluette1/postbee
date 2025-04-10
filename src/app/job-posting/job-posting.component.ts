@@ -238,11 +238,40 @@ export class JobPostingComponent {
       }
 
       // Prepare data for backend
+      const {
+        title,
+        applicationLink,
+        salaryRange,
+        category,
+        subCategory,
+        skills,
+        jobType,
+        worldwide,
+        country,
+        region,
+        timezones,
+      } = this.job;
+
+      const { name, logoUrl, website, email } = this.company;
+
+      const badges: string[] = [];
+      if (category) badges.push(category);
+      if (subCategory) badges.push(subCategory);
+
       const jobPostingData = {
-        job: this.job,
-        company: {
-          ...this.company,
-          logo: this.company.logoUrl, // Replace base64 with URL
+        job_post: {
+          title,
+          company_title: name,
+          company_link: website,
+          link: applicationLink || email,
+          featured: salaryRange,
+          badges,
+          tags: [...skills],
+          time: jobType,
+          logo: logoUrl,
+          location: worldwide
+            ? 'global'
+            : country || region || timezones.join(' '),
         },
       };
 
