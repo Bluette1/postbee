@@ -12,7 +12,6 @@ export class JobService {
   constructor(private http: HttpClient) {}
 
   createJobPosting(jobPostingData: any): Observable<any> {
-    // Transform job_post data to match backend endpoint
     const {
       company: { name, logoUrl, website, email },
       title,
@@ -27,13 +26,18 @@ export class JobService {
       region,
       timezones
     } = jobPostingData;
+
+    const badges: string[] = [];
+    if (category) badges.push(category);
+    if (subCategory) badges.push(subCategory);
+
     const transformedJobPost = {
       title: title,
       company_title: name,
       company_link: website,
       link: applicationLink || email,
       featured: salaryRange,
-      badges: [category, subCategory],
+      badges, 
       tags: [...skills],
       time: jobType,
       logo: logoUrl,
