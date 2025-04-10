@@ -205,7 +205,7 @@ export class JobPostingComponent {
       await this.s3Client.send(command);
 
       // Construct the URL
-      this.company.logoUrl = `https://${environment.aws.bucketName}.s3.${this.s3Client.config.region}.amazonaws.com/${fileName}`;
+      this.company.logoUrl = `https://${environment.aws.bucketName}.s3.${environment.aws.region}.amazonaws.com/${fileName}`;
 
       console.log('Logo uploaded successfully to:', this.company.logoUrl);
 
