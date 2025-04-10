@@ -1,7 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { environment } from '../../environments/environment';
 import { JobService } from './job-post.service';
+
+declare global {
+  interface Window {
+    Calendly: any;
+  }
+}
 
 @Component({
   selector: 'app-job-posting',
@@ -84,6 +90,13 @@ export class JobPostingComponent {
     ],
   };
 
+  ngOnChanges(changes: SimpleChanges): void {
+    // Check if currentStep changed to 3
+    if (changes['currentStep'] && changes['currentStep'].currentValue === 3) {
+      this.initCalendly();
+    }
+  }
+
   goToStep(step: number) {
     // If going to step 2 (preview), upload the logo first if needed
     if (step === 2 && this.imageFile && !this.company.logoUrl) {
@@ -97,6 +110,40 @@ export class JobPostingComponent {
         });
     } else {
       this.currentStep = step;
+    }
+
+    // Initialize Calendly when step 3 is reached
+    if (step === 3) {
+      setTimeout(() => {
+        this.initCalendly();
+      }, 100);
+    }
+  }
+
+  // Initialize Calendly
+  initCalendly() {
+    // Check if Calendly is loaded
+    if (window.Calendly) {
+      // Clear the container first
+      const container = document.querySelector('.calendly-inline-widget');
+      if (container) {
+        container.innerHTML = '';
+
+        // Initialize Calendly
+        window.Calendly.initInlineWidget({
+          url: environment.calendlyUrl,
+          parentElement: container,
+          prefill: {
+            name: this.company.name,
+            email: this.company.email,
+          },
+        });
+      }
+    } else {
+      // If Calendly script hasn't loaded yet, try again in 500ms
+      setTimeout(() => {
+        this.initCalendly();
+      }, 500);
     }
   }
 
