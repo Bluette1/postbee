@@ -33,36 +33,45 @@
     <button mat-button color="accent" (click)="navigateToPostJob()">Post a Job</button>
   </div>
 
-  <!-- Mobile Menu Button - Force hide on desktop with !important -->
+  <!-- Mobile Menu Button -->
   <button mat-icon-button (click)="isMenuOpen = !isMenuOpen" class="block md:hidden mobile-only ml-auto">
     <mat-icon>menu</mat-icon>
   </button>
 
-  <!-- Mobile Menu - Dropdown that appears when menu is clicked -->
+  <!-- Mobile Menu - Completely redesigned to ensure all items are visible -->
   <div *ngIf="isMenuOpen" class="absolute top-16 right-0 left-0 bg-slate-900 z-50 py-2 flex flex-col w-full shadow-lg md:hidden">
-    <div class="px-4">
-      <button mat-button class="w-full justify-start text-white" [matMenuTriggerFor]="mobileEmployerMenu">
-        Employers
-      </button>
-      <mat-menu #mobileEmployerMenu="matMenu">
-        <button mat-menu-item (click)="navigateToIntro()">Intro</button>
-        <button mat-menu-item (click)="navigateToHireTalent()">Hire Talent</button>
-        <button mat-menu-item (click)="navigateToPostJob()">Post a Job</button>
-      </mat-menu>
+    <div class="px-4 flex flex-col gap-1">
+      <!-- Employers Section -->
+      <div class="mobile-menu-section">
+        <button mat-button class="w-full justify-start text-white mb-1" (click)="toggleMobileSection('employer')">
+          Employers <mat-icon>{{ mobileMenuSections.employer ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+        <div *ngIf="mobileMenuSections.employer" class="ml-4 mt-1 mb-2 flex flex-col gap-1">
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToIntro()">Intro</button>
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToHireTalent()">Hire Talent</button>
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToPostJob()">Post a Job</button>
+        </div>
+      </div>
 
-      <button mat-button class="w-full justify-start text-white" [matMenuTriggerFor]="mobileJobSeekerMenu">
-        Job Seekers
-      </button>
-      <mat-menu #mobileJobSeekerMenu="matMenu">
-        <button mat-menu-item (click)="navigateToGuide()">Guide</button>
-        <button mat-menu-item [matMenuTriggerFor]="mobileResourcesMenu">Resources</button>
-        <mat-menu #mobileResourcesMenu="matMenu">
-          <button mat-menu-item (click)="navigateToJournal()">Journal</button>
-          <button mat-menu-item (click)="navigateToDashboard()">Job Tracker</button>
-        </mat-menu>
-      </mat-menu>
+      <!-- Job Seekers Section -->
+      <div class="mobile-menu-section">
+        <button mat-button class="w-full justify-start text-white mb-1" (click)="toggleMobileSection('jobseeker')">
+          Job Seekers <mat-icon>{{ mobileMenuSections.jobseeker ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+        <div *ngIf="mobileMenuSections.jobseeker" class="ml-4 mt-1 mb-2 flex flex-col gap-1">
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToGuide()">Guide</button>
+          <button mat-button class="w-full justify-start text-white" (click)="toggleMobileSection('resources')">
+            Resources <mat-icon>{{ mobileMenuSections.resources ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+          <div *ngIf="mobileMenuSections.resources" class="ml-4 mt-1 mb-2 flex flex-col gap-1">
+            <button mat-button class="w-full justify-start text-white" (click)="navigateToJournal()">Journal</button>
+            <button mat-button class="w-full justify-start text-white" (click)="navigateToDashboard()">Job Tracker</button>
+          </div>
+        </div>
+      </div>
 
-      <div class="mt-4 border-t border-gray-700 pt-4">
+      <!-- Auth and Action Buttons -->
+      <div class="mt-4 border-t border-gray-700 pt-4 flex flex-col gap-1">
         <ng-container *ngIf="!isLoggedIn; else mobileLoggedInTemplate">
           <button mat-button class="w-full justify-start text-white" (click)="navigateToLogin()">Login</button>
           <button mat-button class="w-full justify-start text-white" (click)="navigateToSignUp()">Sign Up</button>
@@ -71,7 +80,7 @@
           <button mat-button class="w-full justify-start text-white" (click)="logout()">Logout</button>
         </ng-template>
         
-        <button mat-button color="accent" class="w-full justify-start mt-2" (click)="navigateToPostJob()">Post a Job</button>
+        <button mat-raised-button color="accent" class="w-full justify-start mt-2" (click)="navigateToPostJob()">Post a Job</button>
       </div>
     </div>
   </div>
