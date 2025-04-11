@@ -23,6 +23,9 @@ import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JobPostingComponent } from './job-posting/job-posting.component';
 
@@ -37,7 +40,7 @@ import { JobPostingComponent } from './job-posting/job-posting.component';
     SignUpComponent,
     InteractionPanelComponent,
     FollowUpFormComponent,
-    JobPostingComponent
+    JobPostingComponent,
   ],
   imports: [
     HttpClientModule,
@@ -57,6 +60,8 @@ import { JobPostingComponent } from './job-posting/job-posting.component';
     MatNativeDateModule,
     MatTooltipModule,
     BrowserAnimationsModule,
+    MatToolbarModule,
+    MatMenuModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

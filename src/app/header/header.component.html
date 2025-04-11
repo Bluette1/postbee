@@ -1,37 +1,42 @@
-<header
-  class="text-xs md:text-base bg-blue-600 text-white py-4 px-6 flex justify-between items-center shadow-md"
->
+<mat-toolbar color="primary" class="flex justify-between items-center">
   <a routerLink="/" class="text-2xl font-bold no-underline">
-    <img src="../../assets/images/logo.png" class="h-7 w-7 mx-2">
-    PostBee</a>
+    <img src="../../assets/images/logo.png" class="rounded-sm h-7 w-7 mx-2">
+    PostBee
+  </a>
+
   <div class="flex items-center">
+    <button mat-button [matMenuTriggerFor]="employerMenu">Employers</button>
+    <mat-menu #employerMenu="matMenu">
+      <button mat-menu-item (click)="navigateToIntro()">Intro</button>
+      <button mat-menu-item (click)="navigateToHireTalent()">Hire Talent</button>
+      <button mat-menu-item (click)="navigateToPostJob()">Post a Job</button>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="jobSeekerMenu" class="ml-2">Job Seekers</button>
+    <mat-menu #jobSeekerMenu="matMenu">
+      <button mat-menu-item (click)="navigateToGuide()">Guide</button>
+      <button mat-menu-item [matMenuTriggerFor]="resourcesMenu">Resources</button>
+      <mat-menu #resourcesMenu="matMenu">
+        <button mat-menu-item (click)="navigateToJournal()">Journal</button>
+        <button mat-menu-item (click)="navigateToDashboard()">Job Tracker</button>
+      </mat-menu>
+    </mat-menu>
+  </div>
+
+  <span class="flex-grow"></span>
+
+  <button mat-icon-button (click)="isMenuOpen = !isMenuOpen" class="md:hidden">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <div [ngClass]="{'hidden': !isMenuOpen, 'flex': isMenuOpen}" class="flex flex-col md:flex-row md:items-center">
     <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
-      <button
-        (click)="navigateToLogin()"
-        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md mr-2 ml-2 md:ml-0"
-      >
-        Login
-      </button>
-      <button
-        (click)="navigateToSignUp()"
-        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
-      >
-        Sign Up
-      </button>
+      <button mat-button (click)="navigateToLogin()">Login</button>
+      <button mat-button (click)="navigateToSignUp()">Sign Up</button>
     </ng-container>
     <ng-template #loggedInTemplate>
-      <button
-        (click)="logout()"
-        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
-      >
-        Logout
-      </button>
+      <button mat-button (click)="logout()">Logout</button>
     </ng-template>
-    <button
-      (click)="navigateToPostJob()"
-      class="bg-customBlue text-white rounded-md px-2 md:px-4 py-2 hover:bg-yellow-600 transition duration-200 shadow-md ml-2 md:ml-4 "
-    >
-      Post a Job
-    </button>
+    <button mat-button color="accent" (click)="navigateToPostJob()">Post a Job</button>
   </div>
-</header>
+</mat-toolbar>
