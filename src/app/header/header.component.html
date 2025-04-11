@@ -1,10 +1,11 @@
 <mat-toolbar color="primary" class="flex justify-between items-center">
-  <a routerLink="/" class="text-2xl font-bold no-underline">
+  <a routerLink="/" class="text-2xl font-bold no-underline flex items-center">
     <img src="../../assets/images/logo.png" class="rounded-sm h-7 w-7 mx-2">
     PostBee
   </a>
 
-  <div class="flex items-center">
+  <!-- Desktop Navigation - Hidden on Mobile -->
+  <div class="hidden md:flex md:items-center md:space-x-2 flex-1 justify-end">
     <button mat-button [matMenuTriggerFor]="employerMenu">Employers</button>
     <mat-menu #employerMenu="matMenu">
       <button mat-menu-item (click)="navigateToIntro()">Intro</button>
@@ -12,7 +13,7 @@
       <button mat-menu-item (click)="navigateToPostJob()">Post a Job</button>
     </mat-menu>
 
-    <button mat-button [matMenuTriggerFor]="jobSeekerMenu" class="ml-2">Job Seekers</button>
+    <button mat-button [matMenuTriggerFor]="jobSeekerMenu">Job Seekers</button>
     <mat-menu #jobSeekerMenu="matMenu">
       <button mat-menu-item (click)="navigateToGuide()">Guide</button>
       <button mat-menu-item [matMenuTriggerFor]="resourcesMenu">Resources</button>
@@ -21,22 +22,57 @@
         <button mat-menu-item (click)="navigateToDashboard()">Job Tracker</button>
       </mat-menu>
     </mat-menu>
-  </div>
 
-  <span class="flex-grow"></span>
-
-  <button mat-icon-button (click)="isMenuOpen = !isMenuOpen" class="md:hidden">
-    <mat-icon>menu</mat-icon>
-  </button>
-
-  <div [ngClass]="{'hidden': !isMenuOpen, 'flex': isMenuOpen}" class="flex flex-col md:flex-row md:items-center">
-    <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
+    <ng-container *ngIf="!isLoggedIn; else desktopLoggedInTemplate">
       <button mat-button (click)="navigateToLogin()">Login</button>
       <button mat-button (click)="navigateToSignUp()">Sign Up</button>
     </ng-container>
-    <ng-template #loggedInTemplate>
+    <ng-template #desktopLoggedInTemplate>
       <button mat-button (click)="logout()">Logout</button>
     </ng-template>
     <button mat-button color="accent" (click)="navigateToPostJob()">Post a Job</button>
+  </div>
+
+  <!-- Mobile Menu Button - Force hide on desktop with !important -->
+  <button mat-icon-button (click)="isMenuOpen = !isMenuOpen" class="block md:hidden mobile-only ml-auto">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Mobile Menu - Dropdown that appears when menu is clicked -->
+  <div *ngIf="isMenuOpen" class="absolute top-16 right-0 left-0 bg-slate-900 z-50 py-2 flex flex-col w-full shadow-lg md:hidden">
+    <div class="px-4">
+      <button mat-button class="w-full justify-start text-white" [matMenuTriggerFor]="mobileEmployerMenu">
+        Employers
+      </button>
+      <mat-menu #mobileEmployerMenu="matMenu">
+        <button mat-menu-item (click)="navigateToIntro()">Intro</button>
+        <button mat-menu-item (click)="navigateToHireTalent()">Hire Talent</button>
+        <button mat-menu-item (click)="navigateToPostJob()">Post a Job</button>
+      </mat-menu>
+
+      <button mat-button class="w-full justify-start text-white" [matMenuTriggerFor]="mobileJobSeekerMenu">
+        Job Seekers
+      </button>
+      <mat-menu #mobileJobSeekerMenu="matMenu">
+        <button mat-menu-item (click)="navigateToGuide()">Guide</button>
+        <button mat-menu-item [matMenuTriggerFor]="mobileResourcesMenu">Resources</button>
+        <mat-menu #mobileResourcesMenu="matMenu">
+          <button mat-menu-item (click)="navigateToJournal()">Journal</button>
+          <button mat-menu-item (click)="navigateToDashboard()">Job Tracker</button>
+        </mat-menu>
+      </mat-menu>
+
+      <div class="mt-4 border-t border-gray-700 pt-4">
+        <ng-container *ngIf="!isLoggedIn; else mobileLoggedInTemplate">
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToLogin()">Login</button>
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToSignUp()">Sign Up</button>
+        </ng-container>
+        <ng-template #mobileLoggedInTemplate>
+          <button mat-button class="w-full justify-start text-white" (click)="logout()">Logout</button>
+        </ng-template>
+        
+        <button mat-button color="accent" class="w-full justify-start mt-2" (click)="navigateToPostJob()">Post a Job</button>
+      </div>
+    </div>
   </div>
 </mat-toolbar>
