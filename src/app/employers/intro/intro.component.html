@@ -1,0 +1,43 @@
+<div class="intro-page p-8 bg-gray-50">
+  <header class="text-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Fill a Vacancy</h1>
+    <h2 class="text-xl text-gray-600">- Full-Time - Part-Time - Hybrid - Remote</h2>
+  </header>
+
+  <div class="free-job-posting text-center my-4">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="navigateToPostJob()" 
+      class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+      Post a Job
+    </button>
+  </div>
+
+  <section class="testimonials my-8">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Testimonials</h3>
+    <div class="testimonial-slide p-4 border rounded-lg shadow-lg bg-white">
+      <img [src]="testimonials[currentTestimonialIndex].picture" alt="Testimonial Picture" class="w-24 h-24 rounded-full mx-auto mb-2">
+      <p class="text-gray-700 text-center">{{ testimonials[currentTestimonialIndex].remarks }}</p>
+    </div>
+
+    <div class="flex justify-between mt-4">
+      <button (click)="prevTestimonial()" class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 transition">
+        Previous
+      </button>
+      <button (click)="nextTestimonial()" class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 transition">
+        Next
+      </button>
+    </div>
+  </section>
+
+  <section class="benefits my-8">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Benefits of Remote Work</h3>
+    <ul class="list-disc list-inside text-gray-700">
+      <li>Flexibility in work hours</li>
+      <li>Increased productivity</li>
+      <li>Reduced commuting time</li>
+      <li>Better work-life balance</li>
+    </ul>
+  </section>
+</div>
