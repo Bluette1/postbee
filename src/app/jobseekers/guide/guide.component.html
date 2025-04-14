@@ -1,6 +1,8 @@
 <div class="intro-page p-8 bg-gray-50">
   <header class="text-center mb-6">
-    <h1 class="text-3xl font-bold text-gray-800">Fill a Vacancy</h1>
+    <h1 class="text-3xl font-bold text-gray-800">Guided Path to Employment.</h1>
+
+    <h2 class="text-3xl font-bold text-gray-800">Track Your Job Search.</h2>
     <h2 class="text-xl text-gray-600">
       - Full-Time - Part-Time - Hybrid - Remote
     </h2>
@@ -10,10 +12,10 @@
     <button
       mat-raised-button
       color="primary"
-      (click)="navigateToPostJob()"
+      (click)="navigateToSignUp()"
       class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
     >
-      Post a Job
+      Sign Up Now
     </button>
   </div>
 
@@ -49,7 +51,9 @@
     </div>
   </section>
 
-  <section class="flex flex-col sm:flex-row benefits my-8 mx-auto w-full max-w-5xl">
+  <section
+    class="flex flex-col sm:flex-row benefits my-8 mx-auto w-full max-w-5xl"
+  >
     <div>
       <h3 class="text-2xl font-semibold text-gray-800 mb-4">
         Benefits of Remote Work
@@ -63,8 +67,12 @@
     </div>
 
     <header class="text-center mb-6 mx-24">
-      <h1 class="text-3xl font-bold text-gray-800 pt-10 sm:pt-0 ">Find Your next Hire</h1>
-      <h2 class="text-xl text-gray-600">- Free Job Posting</h2>
+      <h1 class="text-3xl font-bold text-gray-800 pt-10 sm:pt-0">
+        Find Your next Opportunity
+      </h1>
+      <h2 class="text-xl text-gray-600">- Permanent</h2>
+      <h2 class="text-xl text-gray-600">- B2B Consultant</h2>
+      <h2 class="text-xl text-gray-600">- Software Developer Jobs</h2>
     </header>
     <p
       class="text-xl font-bold text-gray-900 italic my-4 p-4 border-l-4 border-blue-500 bg-blue-100"
@@ -77,10 +85,16 @@
       <button
         class="text-gray-800 py-2 px-4 rounded hover:bg-gray-400 transition"
       >
-        <i class="fas fa-chevron-right"></i>
+        <i class="fas fa-search"></i>
       </button>
-      <a routerLink="/job-posts/new" class="text-2xl font-bold no-underline flex items-center">
-        <img src="../../assets/images/bee.png" class="rounded-sm h-20 w-20 mx-2">
+      <a
+        routerLink="/job-posts/new"
+        class="text-2xl font-bold no-underline flex items-center"
+      >
+        <img
+          src="../../assets/images/bee.png"
+          class="rounded-sm h-20 w-20 mx-2"
+        />
       </a>
     </section>
   </section>

@@ -29,6 +29,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JobPostingComponent } from './job-posting/job-posting.component';
 import { IntroComponent } from './employers/intro/intro.component';
+import { GuideComponent } from './jobseekers/guide/guide.component';
+
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { IntroComponent } from './employers/intro/intro.component';
     InteractionPanelComponent,
     FollowUpFormComponent,
     JobPostingComponent,
-    IntroComponent
+    IntroComponent,
+    GuideComponent
   ],
   imports: [
     HttpClientModule,

@@ -2,26 +2,26 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-intro',
-  templateUrl: './intro.component.html',
-  styleUrls: ['./intro.component.scss'],
+  selector: 'app-guide',
+  templateUrl: './guide.component.html',
+  styleUrls: ['./guide.component.scss'],
 })
-export class IntroComponent implements OnInit, OnDestroy {
+export class GuideComponent implements OnInit, OnDestroy {
   testimonials = [
     {
-      picture: 'assets/images/gettyimages-professional-1.avif',
+      picture: 'assets/images/gettyimages-professional-4.avif',
       remarks: 'Great platform for finding remote talent!',
-      author: 'Julia Cormode, Brand Director @ Gran Centenario',
+      author: 'Reese Withers, Software Developer @ Gran Centenario',
     },
     {
-      picture: 'assets/images/gettyimages-professional-2.avif',
+      picture: 'assets/images/gettyimages-professional-5.avif',
       remarks: 'Found a match within a week!',
-      author: 'Jessica Smith, HR Manager @ Tech Corp',
+      author: 'Nehmiah Richards, Softare Designer @ Tech Corp',
     },
     {
-      picture: 'assets/images/gettyimages-professional-3.avif',
+      picture: 'assets/images/gettyimages-professional-6.avif',
       remarks: 'The hybrid options were perfect for our company needs.',
-      author: 'Alex Monroy, CEO and Founder @ Venture Road',
+      author: 'Nadia Thorpe, Frontend Developer @ Venture Road',
     },
   ];
 
@@ -38,7 +38,7 @@ export class IntroComponent implements OnInit, OnDestroy {
     this.stopAutoSlide();
   }
 
-  navigateToPostJob() {
+  navigateToSignUp() {
     this.router.navigate(['/job-posts/new']);
   }
 
