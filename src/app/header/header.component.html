@@ -1,37 +1,87 @@
-<header
-  class="text-xs md:text-base bg-blue-600 text-white py-4 px-6 flex justify-between items-center shadow-md"
->
-  <a routerLink="/" class="text-2xl font-bold no-underline">
-    <img src="../../assets/images/logo.png" class="h-7 w-7 mx-2">
-    PostBee</a>
-  <div class="flex items-center">
-    <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
-      <button
-        (click)="navigateToLogin()"
-        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md mr-2 ml-2 md:ml-0"
-      >
-        Login
-      </button>
-      <button
-        (click)="navigateToSignUp()"
-        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
-      >
-        Sign Up
-      </button>
+<mat-toolbar color="primary" class="flex justify-between items-center">
+  <a routerLink="/" class="text-2xl font-bold no-underline flex items-center">
+    <img src="../../assets/images/logo.png" class="rounded-sm h-7 w-7 mx-2">
+    PostBee
+  </a>
+
+  <!-- Desktop Navigation - Hidden on Mobile -->
+  <div class="hidden md:flex md:items-center md:space-x-2 flex-1 justify-end">
+    <button mat-button [matMenuTriggerFor]="employerMenu">Employers</button>
+    <mat-menu #employerMenu="matMenu">
+      <button mat-menu-item (click)="navigateToIntro()">Intro</button>
+      <button mat-menu-item (click)="navigateToHireTalent()">Hire Talent</button>
+      <button mat-menu-item (click)="navigateToPostJob()">Post a Job</button>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="jobSeekerMenu">Job Seekers</button>
+    <mat-menu #jobSeekerMenu="matMenu">
+      <button mat-menu-item (click)="navigateToGuide()">Guide</button>
+      <button mat-menu-item [matMenuTriggerFor]="resourcesMenu">Resources</button>
+      <mat-menu #resourcesMenu="matMenu">
+        <button mat-menu-item (click)="navigateToJournal()">Journal</button>
+        <button mat-menu-item (click)="navigateToDashboard()">Job Tracker</button>
+      </mat-menu>
+    </mat-menu>
+
+    <ng-container *ngIf="!isLoggedIn; else desktopLoggedInTemplate">
+      <button mat-button (click)="navigateToLogin()">Login</button>
+      <button mat-button (click)="navigateToSignUp()">Sign Up</button>
     </ng-container>
-    <ng-template #loggedInTemplate>
-      <button
-        (click)="logout()"
-        class="bg-white text-blue-600 rounded-md px-2 md:px-4 py-2 hover:bg-blue-100 transition duration-200 shadow-md"
-      >
-        Logout
-      </button>
+    <ng-template #desktopLoggedInTemplate>
+      <button mat-button (click)="logout()">Logout</button>
     </ng-template>
-    <button
-      (click)="navigateToPostJob()"
-      class="bg-customBlue text-white rounded-md px-2 md:px-4 py-2 hover:bg-yellow-600 transition duration-200 shadow-md ml-2 md:ml-4 "
-    >
-      Post a Job
-    </button>
+    <button mat-button color="accent" (click)="navigateToPostJob()">Post a Job</button>
   </div>
-</header>
+
+  <!-- Mobile Menu Button -->
+  <button mat-icon-button (click)="isMenuOpen = !isMenuOpen" class="block md:hidden mobile-only ml-auto">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Mobile Menu - Completely redesigned to ensure all items are visible -->
+  <div *ngIf="isMenuOpen" class="absolute top-16 right-0 left-0 bg-slate-900 z-50 py-2 flex flex-col w-full shadow-lg md:hidden">
+    <div class="px-4 flex flex-col gap-1">
+      <!-- Employers Section -->
+      <div class="mobile-menu-section">
+        <button mat-button class="w-full justify-start text-white mb-1" (click)="toggleMobileSection('employer')">
+          Employers <mat-icon>{{ mobileMenuSections.employer ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+        <div *ngIf="mobileMenuSections.employer" class="ml-4 mt-1 mb-2 flex flex-col gap-1">
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToIntro()">Intro</button>
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToHireTalent()">Hire Talent</button>
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToPostJob()">Post a Job</button>
+        </div>
+      </div>
+
+      <!-- Job Seekers Section -->
+      <div class="mobile-menu-section">
+        <button mat-button class="w-full justify-start text-white mb-1" (click)="toggleMobileSection('jobseeker')">
+          Job Seekers <mat-icon>{{ mobileMenuSections.jobseeker ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+        <div *ngIf="mobileMenuSections.jobseeker" class="ml-4 mt-1 mb-2 flex flex-col gap-1">
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToGuide()">Guide</button>
+          <button mat-button class="w-full justify-start text-white" (click)="toggleMobileSection('resources')">
+            Resources <mat-icon>{{ mobileMenuSections.resources ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+          <div *ngIf="mobileMenuSections.resources" class="ml-4 mt-1 mb-2 flex flex-col gap-1">
+            <button mat-button class="w-full justify-start text-white" (click)="navigateToJournal()">Journal</button>
+            <button mat-button class="w-full justify-start text-white" (click)="navigateToDashboard()">Job Tracker</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auth and Action Buttons -->
+      <div class="mt-4 border-t border-gray-700 pt-4 flex flex-col gap-1">
+        <ng-container *ngIf="!isLoggedIn; else mobileLoggedInTemplate">
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToLogin()">Login</button>
+          <button mat-button class="w-full justify-start text-white" (click)="navigateToSignUp()">Sign Up</button>
+        </ng-container>
+        <ng-template #mobileLoggedInTemplate>
+          <button mat-button class="w-full justify-start text-white" (click)="logout()">Logout</button>
+        </ng-template>
+        
+        <button mat-raised-button color="accent" class="w-full justify-start mt-2" (click)="navigateToPostJob()">Post a Job</button>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

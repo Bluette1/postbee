@@ -6,6 +6,8 @@ import { map, catchError } from 'rxjs/operators';
 import { JobInteractionService } from './job-post-interaction/interaction.service';
 import { AuthService } from '../auth.service';
 import { slugify } from '../utils/slugify';
+import { Router } from '@angular/router';
+
 
 interface Job {
   _id: string;
@@ -88,7 +90,8 @@ export class JobPostsComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private jobInteractionService: JobInteractionService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     // Initialize logoLoaded for each job in ngOnInit
     this.sortedJobs$.subscribe((jobs) => {
@@ -365,5 +368,9 @@ export class JobPostsComponent implements OnInit {
     }
 
     return originalPostingDate;
+  }
+
+  navigateToPostJob() {
+    this.router.navigate(['/job-posts/new']);
   }
 }
