@@ -16,12 +16,12 @@ export class GuideComponent implements OnInit, OnDestroy {
     {
       picture: 'assets/images/gettyimages-professional-5.avif',
       remarks: 'Found a match within a week!',
-      author: 'Nehmiah Richards, Softare Designer @ Tech Corp',
+      author: 'Nadia Thorpe, Frontend Developer @ Venture Road',
     },
     {
       picture: 'assets/images/gettyimages-professional-6.avif',
       remarks: 'The hybrid options were perfect for our company needs.',
-      author: 'Nadia Thorpe, Frontend Developer @ Venture Road',
+      author: 'Nehmiah Richards, Softare Designer @ Tech Corp',
     },
   ];
 

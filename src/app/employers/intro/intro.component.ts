@@ -16,12 +16,12 @@ export class IntroComponent implements OnInit, OnDestroy {
     {
       picture: 'assets/images/gettyimages-professional-2.avif',
       remarks: 'Found a match within a week!',
-      author: 'Jessica Smith, HR Manager @ Tech Corp',
+      author: ' Alex Monroy, CEO and Founder @ Venture Road',
     },
     {
       picture: 'assets/images/gettyimages-professional-3.avif',
       remarks: 'The hybrid options were perfect for our company needs.',
-      author: 'Alex Monroy, CEO and Founder @ Venture Road',
+      author: 'Jessica Smith, HR Manager @ Tech Corp',
     },
   ];
 
