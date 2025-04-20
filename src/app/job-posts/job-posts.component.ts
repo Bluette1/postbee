@@ -178,7 +178,11 @@ export class JobPostsComponent implements OnInit {
     this.http.get<Job[]>(apiUrl).subscribe(
       (data) => {
         // Use sliced data for now to avoid overwhelming the web page
-        const slicedData = data.slice(0, Math.ceil((data.length * 2) / 3));
+        let slicedData = data.slice(0, Math.ceil((data.length * 2) / 3));
+        
+        if (slicedData.length > 700) {
+          slicedData = data.slice(0, 700)
+        }
         // Check link existence for each job
         combineLatest(
           slicedData.map((job) =>
