@@ -8,7 +8,6 @@ import { AuthService } from '../auth.service';
 import { slugify } from '../utils/slugify';
 import { Router } from '@angular/router';
 
-
 interface Job {
   _id: string;
   title: string;
@@ -177,15 +176,9 @@ export class JobPostsComponent implements OnInit {
     const apiUrl = `${this.apiUrl}/job_posts`;
     this.http.get<Job[]>(apiUrl).subscribe(
       (data) => {
-        // Use sliced data for now to avoid overwhelming the web page
-        let slicedData = data.slice(0, Math.ceil((data.length * 2) / 3));
-        
-        if (slicedData.length > 700) {
-          slicedData = data.slice(0, 700)
-        }
         // Check link existence for each job
         combineLatest(
-          slicedData.map((job) =>
+          data.map((job) =>
             this.checkJobLinkExists(job.link).pipe(
               map((exists) => ({ ...job, linkExists: exists }))
             )
