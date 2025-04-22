@@ -9,17 +9,17 @@ import { Router } from '@angular/router';
 export class IntroComponent implements OnInit, OnDestroy {
   testimonials = [
     {
-      picture: 'assets/images/gettyimages-professional-1.avif',
+      picture: 'assets/images/cropped-gettyimages-professional-1.avif',
       remarks: 'Great platform for finding remote talent!',
       author: 'Julia Cormode, Brand Director @ Gran Centenario',
     },
     {
-      picture: 'assets/images/gettyimages-professional-2.avif',
+      picture: 'assets/images/cropped-gettyimages-professional-2.avif',
       remarks: 'Found a match within a week!',
       author: ' Alex Monroy, CEO and Founder @ Venture Road',
     },
     {
-      picture: 'assets/images/gettyimages-professional-3.avif',
+      picture: 'assets/images/cropped-gettyimages-professional-3.avif',
       remarks: 'The hybrid options were perfect for our company needs.',
       author: 'Jessica Smith, HR Manager @ Tech Corp',
     },

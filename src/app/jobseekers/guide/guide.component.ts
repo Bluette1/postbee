@@ -9,17 +9,17 @@ import { Router } from '@angular/router';
 export class GuideComponent implements OnInit, OnDestroy {
   testimonials = [
     {
-      picture: 'assets/images/gettyimages-professional-4.avif',
+      picture: 'assets/images/cropped-gettyimages-professional-4.avif',
       remarks: 'Great platform for finding remote talent!',
       author: 'Reese Withers, Software Developer @ Gran Centenario',
     },
     {
-      picture: 'assets/images/gettyimages-professional-5.avif',
+      picture: 'assets/images/cropped-gettyimages-professional-5.avif',
       remarks: 'Found a match within a week!',
       author: 'Nadia Thorpe, Frontend Developer @ Venture Road',
     },
     {
-      picture: 'assets/images/gettyimages-professional-6.avif',
+      picture: 'assets/images/cropped-gettyimages-professional-6.avif',
       remarks: 'The hybrid options were perfect for our company needs.',
       author: 'Nehmiah Richards, Softare Designer @ Tech Corp',
     },
